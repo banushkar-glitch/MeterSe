@@ -1,446 +1,685 @@
 import 'package:flutter/material.dart';
 
-class MyTripsScreen extends StatefulWidget {
-  const MyTripsScreen({super.key});
+class RideHistoryModel {
+  final String pickup;
+  final String drop;
+  final String date;
+  final String time;
+  final String status;
 
-  @override
-  State<MyTripsScreen> createState() => _MyTripsScreenState();
+  const RideHistoryModel({
+    required this.pickup,
+    required this.drop,
+    required this.date,
+    required this.time,
+    required this.status,
+  });
 }
 
-class _MyTripsScreenState extends State<MyTripsScreen> {
-  String selectedTab = "Today";
+class RidesCompletedScreen extends StatefulWidget {
+  const RidesCompletedScreen({super.key});
+
+  @override
+  State<RidesCompletedScreen> createState() =>
+      _RidesCompletedScreenState();
+}
+
+class _RidesCompletedScreenState
+    extends State<RidesCompletedScreen> {
+
+  //////////////////////////////
+  /// FILTER
+  //////////////////////////////
+
+  String selectedFilter = "Today";
+
+  //////////////////////////////
+  /// BACKEND DATA
+  //////////////////////////////
+
+  List<RideHistoryModel> rideList = [
+
+    RideHistoryModel(
+      pickup: "Kothrud",
+      drop: "Wakad",
+      date: "27 April",
+      time: "10:15 AM",
+      status: "Completed",
+    ),
+
+    RideHistoryModel(
+      pickup: "Shivaji Nagar",
+      drop: "Kothrud",
+      date: "27 April",
+      time: "09:20 AM",
+      status: "Completed",
+    ),
+
+    RideHistoryModel(
+      pickup: "Aundh",
+      drop: "Wakad",
+      date: "27 April",
+      time: "08:30 AM",
+      status: "Completed",
+    ),
+
+    RideHistoryModel(
+      pickup: "FC Road",
+      drop: "Wakad",
+      date: "27 April",
+      time: "07:15 AM",
+      status: "Completed",
+    ),
+
+    RideHistoryModel(
+      pickup: "Pune Station",
+      drop: "Kharadi",
+      date: "27 April",
+      time: "06:40 AM",
+      status: "Completed",
+    ),
+
+  ];
+
+  //////////////////////////////////////////
+  /// FOOTER DATA (API LATER)
+  //////////////////////////////////////////
+
+  int totalTrips = 12;
+
+  String totalDistance = "56 Km";
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
-      backgroundColor: const Color(0xFFE4CB61),
+
+      resizeToAvoidBottomInset: false,
 
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.04,
-          ),
 
-          child: Column(
-            children: [
+        child: Column(
 
-              SizedBox(height: size.height * 0.015),
+          children: [
 
-              /// HEADER
-              Row(
+            //////////////////////////////////////
+            /// HEADER
+            //////////////////////////////////////
+
+            Container(
+
+              width: double.infinity,
+              height: 99,
+
+              color: const Color(0xFFFFD329),
+
+              child: Row(
+
                 children: [
 
+                  const SizedBox(width: 10),
+
                   IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.menu,
-                      size: size.width * 0.07,
+
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 38,
+                      color: Colors.black,
                     ),
+
+                  ),
+
+                  const Expanded(
+
+                    child: Text(
+
+                      "Rides Completed",
+
+                      textAlign: TextAlign.center,
+
+                      style: TextStyle(
+
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+
+                      ),
+
+                    ),
+
+                  ),
+
+                  IconButton(
+
+                    onPressed: () {
+
+                      /// Notification API
+
+                    },
+
+                    icon: const Icon(
+                      Icons.notifications_none,
+                      size: 38,
+                      color: Colors.black,
+                    ),
+
+                  ),
+
+                  const SizedBox(width: 10),
+
+                ],
+
+              ),
+
+            ),
+
+            //////////////////////////////////////
+            /// BODY
+            //////////////////////////////////////
+
+            Expanded(
+
+              child: Container(
+
+                color: const Color(0xFFEAEAEA),
+
+                child: Column(
+
+                  children: [
+
+                    const SizedBox(height: 10),
+
+                    //////////////////////////////////////
+                    /// TODAY WEEKLY MONTHLY
+                    //////////////////////////////////////
+
+                    Container(
+
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 23,
+                      ),
+
+                      height: 46,
+
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+
+                      child: Row(
+
+                        children: [
+
+                          filterButton("Today"),
+
+                          filterButton("Weekly"),
+
+                          filterButton("Monthly"),
+
+                        ],
+
+                      ),
+
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    //////////////////////////////////////
+                    /// RIDE LIST
+                    //////////////////////////////////////
+
+                    Expanded(
+
+                      child: ListView.builder(
+
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 23,
+                        ),
+
+                        itemCount: rideList.length,
+
+                        itemBuilder: (context, index) {
+                          return rideCard(rideList[index]);
+                        },
+
+                      ),
+
+                    ),
+
+                  ],
+
+                ),
+
+              ),
+
+            ),
+
+            //////////////////////////////////////
+            /// FOOTER
+            //////////////////////////////////////
+
+            Container(
+
+              width: double.infinity,
+              height: 99,
+              color: const Color(0xFF3C3A3A),
+
+              child: Row(
+
+                children: [
+
+                  Expanded(
+
+                    child: Row(
+
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+
+                      children: [
+
+                        Image.asset(
+                          "assets/autodocument.png",
+                          width: 38,
+                          height: 38,
+                        ),
+
+                        const SizedBox(width: 8),
+
+                        Column(
+
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+
+                          children: [
+
+                            const Text(
+
+                              "Total Trips",
+
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
+
+                            ),
+
+                            Text(
+
+                              "$totalTrips",
+
+                              style: const TextStyle(
+
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+
+                              ),
+
+                            ),
+
+                          ],
+
+                        ),
+
+                      ],
+
+                    ),
+
+                  ),
+
+                  Container(
+                    width: 1,
+                    height: 50,
+                    color: Colors.white,
                   ),
 
                   Expanded(
-                    child: Text(
-                      "My Trips",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: size.width * 0.05,
-                      ),
+
+                    child: Row(
+
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+
+                      children: [
+
+                        const Icon(
+                          Icons.route,
+                          color: Colors.white,
+                          size: 36,
+                        ),
+
+                        const SizedBox(width: 8),
+
+                        Column(
+
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+
+                          children: [
+
+                            const Text(
+
+                              "Total Distance",
+
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
+
+                            ),
+
+                            Text(
+
+                              totalDistance,
+
+                              style: const TextStyle(
+
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+
+                              ),
+
+                            ),
+
+                          ],
+
+                        ),
+
+                      ],
+
                     ),
+
                   ),
 
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.notifications_none,
-                      size: size.width * 0.065,
-                    ),
-                  ),
                 ],
+
               ),
 
-              SizedBox(height: size.height * 0.05),
+            ),
 
-              /// TABS
-              Container(
-                padding: EdgeInsets.all(size.width * 0.01),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Row(
-                  children: [
+          ],
 
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedTab = "Today";
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: size.height * 0.01,
-                          ),
-                          decoration: BoxDecoration(
-                            color: selectedTab == "Today"
-                                ? Colors.grey.shade300
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            "Today",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedTab = "Weekly";
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: size.height * 0.01,
-                          ),
-                          decoration: BoxDecoration(
-                            color: selectedTab == "Weekly"
-                                ? Colors.grey.shade300
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            "Weekly",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedTab = "Monthly";
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            vertical: size.height * 0.01,
-                          ),
-                          decoration: BoxDecoration(
-                            color: selectedTab == "Monthly"
-                                ? Colors.grey.shade300
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            "Monthly",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: size.height * 0.05),
-
-              /// TRIPS LIST
-              Expanded(
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-
-                    if (selectedTab == "Today") ...[
-                      tripCard(
-                        context,
-                        pickup: "Kothrud",
-                        drop: "Wakad",
-                        date: "27 April",
-                        time: "10:15 AM",
-                      ),
-                      tripCard(
-                        context,
-                        pickup: "Shivaji Nagar",
-                        drop: "Kothrud",
-                        date: "27 April",
-                        time: "09:20 AM",
-                      ),
-                    ],
-
-                    if (selectedTab == "Weekly") ...[
-                      tripCard(
-                        context,
-                        pickup: "Mumbai",
-                        drop: "Pune",
-                        date: "This Week",
-                        time: "11:30 AM",
-                      ),
-                      tripCard(
-                        context,
-                        pickup: "Nashik",
-                        drop: "Pune",
-                        date: "This Week",
-                        time: "02:00 PM",
-                      ),
-                    ],
-
-                    if (selectedTab == "Monthly") ...[
-                      tripCard(
-                        context,
-                        pickup: "Nagpur",
-                        drop: "Mumbai",
-                        date: "This Month",
-                        time: "08:45 AM",
-                      ),
-                      tripCard(
-                        context,
-                        pickup: "Pune",
-                        drop: "Kolhapur",
-                        date: "This Month",
-                        time: "06:15 PM",
-                      ),
-                    ],
-
-                    SizedBox(height: size.height * 0.01),
-
-                  ],
-                ),
-              ),
-              /// SUMMARY CARD
-              Container(
-                padding: EdgeInsets.all(size.width * 0.04),
-
-                decoration: BoxDecoration(
-                  color: const Color(0xFF433A37),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-
-                child: Row(
-                  children: [
-
-                    Expanded(
-                      child: Row(
-                        children: [
-
-                          const Icon(
-                            Icons.local_taxi,
-                            color: Colors.white,
-                          ),
-
-                          SizedBox(width: size.width * 0.02),
-
-                          Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-
-                            children: const [
-                              Text(
-                                "Total Trips",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 11,
-                                ),
-                              ),
-
-                              Text(
-                                "12",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight:
-                                  FontWeight.bold,
-                                  fontSize: 22,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Container(
-                      width: 1,
-                      height: 40,
-                      color: Colors.white30,
-                    ),
-
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.center,
-
-                        children: [
-
-                          const Icon(
-                            Icons.route,
-                            color: Colors.white,
-                          ),
-
-                          SizedBox(width: size.width * 0.02),
-
-                          Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-
-                            children: const [
-
-                              Text(
-                                "Total Distance",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 11,
-                                ),
-                              ),
-
-                              Text(
-                                "56 Km",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight:
-                                  FontWeight.bold,
-                                  fontSize: 22,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: size.height * 0.06),
-            ],
-          ),
         ),
+
       ),
+
     );
   }
+  ////////////////////////////////////////////////////////
+  /// FILTER BUTTON
+////////////////////////////////////////////////////////
 
-  Widget tripCard(
-      BuildContext context, {
-        required String pickup,
-        required String drop,
-        required String date,
-        required String time,
-      }) {
-    final size = MediaQuery.of(context).size;
+  Widget filterButton(String title) {
 
-    return Container(
-      margin: EdgeInsets.only(
-        bottom: size.height * 0.012,
-      ),
+    bool isSelected = selectedFilter == title;
 
-      padding: EdgeInsets.all(size.width * 0.03),
+    return Expanded(
 
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
+      child: GestureDetector(
 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        onTap: () {
 
-          Row(
-            children: [
+          setState(() {
 
-              const Icon(
-                Icons.location_on,
-                color: Colors.green,
-                size: 16,
-              ),
+            selectedFilter = title;
 
-              SizedBox(width: size.width * 0.01),
+            //////////////////////////////////////
+            /// BACKEND API
+            //////////////////////////////////////
 
-              Expanded(
-                child: Text(
-                  pickup,
-                  style: TextStyle(
-                    fontSize: size.width * 0.033,
-                  ),
-                ),
-              ),
-            ],
+            if (title == "Today") {
+
+              /// getTodayRides();
+
+            } else if (title == "Weekly") {
+
+              /// getWeeklyRides();
+
+            } else {
+
+              /// getMonthlyRides();
+
+            }
+
+          });
+
+        },
+
+        child: Container(
+
+          margin: const EdgeInsets.symmetric(
+            horizontal: 5,
+            vertical: 7,
           ),
 
-          SizedBox(height: size.height * 0.005),
+          decoration: BoxDecoration(
 
-          Row(
-            children: [
+            color: isSelected
+                ? const Color(0xFFD0D0D0)
+                : Colors.white,
 
-              const Icon(
-                Icons.location_on,
-                color: Colors.red,
-                size: 16,
-              ),
+            borderRadius: BorderRadius.circular(30),
 
-              SizedBox(width: size.width * 0.01),
-
-              Expanded(
-                child: Text(
-                  drop,
-                  style: TextStyle(
-                    fontSize: size.width * 0.033,
-                  ),
-                ),
-              ),
-            ],
           ),
 
-          SizedBox(height: size.height * 0.01),
+          child: Center(
 
-          Row(
-            children: [
+            child: Text(
 
-              Text(
-                date,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: size.width * 0.025,
-                ),
+              title,
+
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
               ),
 
-              SizedBox(width: size.width * 0.05),
+            ),
 
-              Text(
-                time,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: size.width * 0.025,
-                ),
+          ),
+
+        ),
+
+      ),
+
+    );
+
+  }
+
+////////////////////////////////////////////////////////
+  /// RIDE CARD
+////////////////////////////////////////////////////////
+
+  Widget rideCard(RideHistoryModel ride) {
+
+    return InkWell(
+
+      onTap: () {
+
+        //////////////////////////////////////
+        /// OPEN RIDE DETAILS
+        //////////////////////////////////////
+
+      },
+
+      child: Container(
+
+        margin: const EdgeInsets.only(bottom: 10),
+
+        padding: const EdgeInsets.all(15),
+
+        decoration: BoxDecoration(
+
+          color: Colors.white,
+
+          borderRadius: BorderRadius.circular(10),
+
+        ),
+
+        child: Row(
+
+          crossAxisAlignment: CrossAxisAlignment.start,
+
+          children: [
+
+            Expanded(
+
+              child: Column(
+
+                crossAxisAlignment:
+                CrossAxisAlignment.start,
+
+                children: [
+
+                  Row(
+
+                    children: [
+
+                      const Icon(
+                        Icons.location_on,
+                        color: Colors.green,
+                        size: 18,
+                      ),
+
+                      const SizedBox(width: 6),
+
+                      Text(
+
+                        ride.pickup,
+
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+
+                      ),
+
+                    ],
+
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Row(
+
+                    children: [
+
+                      const Icon(
+                        Icons.location_on,
+                        color: Colors.red,
+                        size: 18,
+                      ),
+
+                      const SizedBox(width: 6),
+
+                      Text(
+
+                        ride.drop,
+
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+
+                      ),
+
+                    ],
+
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Text(
+
+                    "${ride.date}      |      ${ride.time}",
+
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey,
+                    ),
+
+                  ),
+
+                ],
+
               ),
 
-              const Spacer(),
+            ),
 
-              const Icon(
-                Icons.check_circle,
-                color: Colors.green,
-                size: 16,
-              ),
+            const SizedBox(width: 10),
 
-              SizedBox(width: size.width * 0.01),
+            Column(
 
-              Text(
-                "Completed",
-                style: TextStyle(
+              children: [
+
+                const Icon(
+
+                  Icons.check_circle,
+
                   color: Colors.green,
-                  fontSize: size.width * 0.025,
+
+                  size: 28,
+
                 ),
-              ),
-            ],
-          ),
-        ],
+
+                const SizedBox(height: 3),
+
+                Text(
+
+                  ride.status,
+
+                  style: const TextStyle(
+
+                    color: Color(0xFF09AC32),
+
+                    fontSize: 12,
+
+                  ),
+
+                ),
+
+              ],
+
+            ),
+
+          ],
+
+        ),
+
       ),
+
     );
+
   }
+
+////////////////////////////////////////////////////////
+  /// BACKEND PLACEHOLDERS
+////////////////////////////////////////////////////////
+
+  Future<void> getTodayRides() async {
+
+    /// TODAY API
+
+  }
+
+  Future<void> getWeeklyRides() async {
+
+    /// WEEKLY API
+
+  }
+
+  Future<void> getMonthlyRides() async {
+
+    /// MONTHLY API
+
+  }
+
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../slidedrawer/slidebar_screen.dart';
 import 'rideaccept_screen.dart';
+import '../slidedrawer/reject_slider.dart';
 class NewRideRequestScreen extends StatefulWidget {
   const NewRideRequestScreen({super.key});
 
@@ -67,59 +68,65 @@ class _NewRideRequestScreenState
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      drawer: DrawerMenu(),
-      backgroundColor: const Color(0xFFE3C65A),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.045,
-            vertical: size.height * 0.015,
+    return Center(
+        child: Container(
+          width: size.width * 0.88,
+          padding: EdgeInsets.all(size.width * 0.04),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFD329),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                offset: Offset(0, 4),
+              ),
+            ],
           ),
+          child: SizedBox(
+            height: size.height * 0.78,
           child: Column(
+
             children: [
 
               //-----------------------------------
               // HEADER
               //-----------------------------------
+          Center(
+          child: Container(
+          width: 180,
+            height: 30,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3C3A3A),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
 
-              Row(
-                children: [
-                  Builder(
-                    builder: (context) => IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: Icon(
-                        Icons.menu,
-                        size: size.width * 0.07,
-                        color: Colors.black,
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.white,
+                      size: 17,
+                    ),
+
+                    SizedBox(width: 8),
+
+                    Text(
+                      "New Ride Request",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        "New Ride Request",
-                        style: TextStyle(
-                          fontSize: size.width * 0.043,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Icon(
-                    Icons.notifications_none,
-                    size: size.width * 0.065,
-                    color: Colors.black,
-                  ),
-                ],
+                  ],
+                ),
               ),
+          ),
+              SizedBox(height: size.height * 0.02),
 
-              SizedBox(height: size.height * 0.03),
+
 
               //-----------------------------------
               // MAP CARD
@@ -135,7 +142,7 @@ class _NewRideRequestScreenState
                   borderRadius:
                   BorderRadius.circular(24),
                   child: AspectRatio(
-                    aspectRatio: 1.45,
+                    aspectRatio: 1.2,
                     child: GoogleMap(
                       initialCameraPosition:
                       CameraPosition(
@@ -155,197 +162,141 @@ class _NewRideRequestScreenState
               ),
 
               SizedBox(height: size.height * 0.03),
-
               //-----------------------------------
               // RIDE INFO CARD
               //-----------------------------------
 
               Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(size.width * 0.045),
+                width: 305,
+                height: 160,
+
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: const Color(0xFFD9D9D9),
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: Column(
-                  children: [
 
-                    //-----------------------------------
-                    // PICKUP
-                    //-----------------------------------
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
 
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on,
-                          color: Colors.green,
-                          size: size.width * 0.045,
-                        ),
+                  child: Column(
+                    children: [
 
-                        SizedBox(width: size.width * 0.015),
+                      /// PROFILE ROW
+                      Row(
+                        children: [
 
-                        Expanded(
-                          child: Text(
-                            "Shivaji Nagar",
+                          const CircleAvatar(
+                            radius: 18,
+                            backgroundImage:
+                            AssetImage("assets/profile.png"),
+                          ),
+
+                          const SizedBox(width: 18),
+
+                          const Expanded(
+                            child: Text(
+                              "Neha",
+                              style: TextStyle(
+                                fontSize: 19,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+
+                          const Icon(
+                            Icons.star,
+                            size: 18,
+                            color: Colors.black,
+                          ),
+
+                          const SizedBox(width: 3),
+
+                          const Text(
+                            "4.9",
                             style: TextStyle(
-                              fontSize: size.width * 0.032,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                        ),
+                        ],
+                      ),
 
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.025,
-                            vertical: size.height * 0.005,
+                      const SizedBox(height: 10),
+
+                      const Divider(
+                        color: Colors.black12,
+                        thickness: 1,
+                      ),
+
+                      const SizedBox(height: 14),
+
+                      /// PICKUP
+                      Row(
+                        children: [
+
+                          const Icon(
+                            Icons.location_on,
+                            color: Colors.green,
+                            size: 20,
                           ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFE3C65A),
-                            borderRadius: BorderRadius.circular(8),
+
+                          const SizedBox(width: 8),
+
+                          const Expanded(
+                            child: Text(
+                              "Shivaji Nagar",
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
-                          child: Text(
-                            "Meter Based",
+
+                          const Text(
+                            "0.5 km",
                             style: TextStyle(
-                              fontSize: size.width * 0.024,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-                    SizedBox(height: size.height * 0.015),
+                      const SizedBox(height: 14),
 
-                    //-----------------------------------
-                    // DROP
-                    //-----------------------------------
+                      /// DROP
+                      Row(
+                        children: [
 
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on,
-                          color: Colors.red,
-                          size: size.width * 0.045,
-                        ),
+                          const Icon(
+                            Icons.location_on,
+                            color: Colors.red,
+                            size: 20,
+                          ),
 
-                        SizedBox(width: size.width * 0.015),
+                          const SizedBox(width: 8),
 
-                        Expanded(
-                          child: Text(
-                            "Hinjewadi Phase 1",
+                          const Expanded(
+                            child: Text(
+                              "Hinjewadi Phase 1",
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+
+                          const Text(
+                            "9.5 km",
                             style: TextStyle(
-                              fontSize: size.width * 0.032,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: size.height * 0.02),
-
-                    Divider(
-                      color: Colors.grey.shade300,
-                      thickness: 1,
-                    ),
-
-                    SizedBox(height: size.height * 0.015),
-
-                    //-----------------------------------
-                    // CUSTOMER INFO
-                    //-----------------------------------
-
-                    Row(
-                      children: [
-
-                        CircleAvatar(
-                          radius: size.width * 0.045,
-                          backgroundColor:
-                          const Color(0xFF3B82F6),
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: size.width * 0.05,
-                          ),
-                        ),
-
-                        SizedBox(width: size.width * 0.03),
-
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Rahul",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize:
-                                  size.width * 0.035,
-                                ),
-                              ),
-                              Text(
-                                "Customer",
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontSize:
-                                  size.width * 0.028,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                              size: size.width * 0.04,
-                            ),
-                            SizedBox(width: size.width * 0.01),
-                            Text(
-                              "4.5",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize:
-                                size.width * 0.035,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(width: size.width * 0.08),
-
-                        Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Distance",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize:
-                                size.width * 0.026,
-                              ),
-                            ),
-                            Text(
-                              "8.2 km",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize:
-                                size.width * 0.05,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
-              const Spacer(),
+              SizedBox(height: size.height * 0.03),
 
               //-----------------------------------
               // ACCEPT SLIDER BUTTON
@@ -353,7 +304,7 @@ class _NewRideRequestScreenState
 
               Container(
                 width: double.infinity,
-                height: 60,
+                height: 55,
                 decoration: BoxDecoration(
                   color: const Color(0xFF4B4B4B),
                   borderRadius: BorderRadius.circular(30),
@@ -372,7 +323,7 @@ class _NewRideRequestScreenState
                             "Swipe to Accept",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: size.width * 0.035,
+                              fontSize: size.width * 0.050,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -405,25 +356,16 @@ class _NewRideRequestScreenState
 
                             onHorizontalDragEnd: (_) {
 
-                              if (sliderPosition >=
-                                  maxSlide * 0.8) {
+                              if (sliderPosition >= maxSlide * 0.8) {
 
-                                ScaffoldMessenger.of(
-                                  context,
-                                ).showSnackBar(
-                                  const SnackBar(
-                                    content:
-                                    Text("Ride Accepted"),
-                                  ),
-                                );
-
-                                // navigate here later
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RideAcceptedScreen(),
+                                    builder: (context) => const RideAcceptedScreen(),
                                   ),
                                 );
+
+                                return;
                               }
 
                               setState(() {
@@ -435,7 +377,7 @@ class _NewRideRequestScreenState
                               width: 62,
                               decoration: BoxDecoration(
                                 color:
-                                const Color(0xFFE3C65A),
+                                const Color(0xFFFFD329),
                                 borderRadius:
                                 BorderRadius.circular(30),
                               ),
@@ -462,24 +404,18 @@ class _NewRideRequestScreenState
 
               SizedBox(height: size.height * 0.02),
 
-              Text(
-                "or",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: size.width * 0.032,
-                ),
-              ),
-
-              SizedBox(height: size.height * 0.02),
-
               //-----------------------------------
               // REJECT BUTTON
               //-----------------------------------
 
-              SizedBox(
-                width: double.infinity,
+          Center(
+            child: SizedBox(
+              width: 150,
+
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    showRejectRideBottomSheet(context);
+                  },
                   icon: const Icon(
                     Icons.close,
                     color: Colors.red,
@@ -488,7 +424,7 @@ class _NewRideRequestScreenState
                     "Reject",
                     style: TextStyle(
                       color: Colors.red,
-                      fontSize: size.width * 0.035,
+                      fontSize: size.width * 0.045,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -496,7 +432,7 @@ class _NewRideRequestScreenState
                     backgroundColor: Colors.white,
                     elevation: 0,
                     padding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.018,
+                      vertical: size.height * 0.014,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius:
@@ -505,12 +441,12 @@ class _NewRideRequestScreenState
                   ),
                 ),
               ),
-
+          ),
               SizedBox(height: size.height * 0.01),
             ],
           ),
         ),
-      ),
+        ),
     );
   }
 }

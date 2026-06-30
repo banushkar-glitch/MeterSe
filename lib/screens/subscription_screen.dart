@@ -1,212 +1,256 @@
 import 'package:flutter/material.dart';
-import 'paymentsubscription_screen.dart';
-class SubscriptionScreen extends StatelessWidget {
+import 'rides/map_screen.dart';
+import '../utils/app_text.dart';
+
+class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<SubscriptionScreen> createState() =>
+      _SubscriptionScreenState();
+}
 
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+class _SubscriptionScreenState
+    extends State<SubscriptionScreen> {
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFE3C65A),
+  String? selectedPlan;
 
-      body: SafeArea(
-        child: Stack(
-          children: [
+  Widget planButton(
+      String title,
+      double width,
+      ) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          selectedPlan = title;
+        });
+      },
 
-            /// 🔹 SCROLLABLE CONTENT
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
+      child: Container(
+        width: width,
+        height: 40,
 
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.08,
-                ),
+        decoration: BoxDecoration(
+          color: selectedPlan == title
+              ? const Color(0xFFFFD329)
+              : const Color(0xFFCDCDCD),
 
-                child: Column(
-                  children: [
+          border: Border.all(
+            color: const Color(0xFF767676),
+          ),
 
-                    SizedBox(height: height * 0.02),
+          borderRadius: BorderRadius.circular(8),
+        ),
 
-                    /// 🔹 TOP BAR
-                    Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-
-                      children: [
-
-                        /// MENU ICON
-                        IconButton(
-                          onPressed: () {
-
-                            // MENU LOGIC
-                          },
-
-                          icon: Icon(
-                            Icons.menu,
-                            size: width * 0.075,
-                            color: Colors.black,
-                          ),
-                        ),
-
-                        /// NOTIFICATION ICON
-                        IconButton(
-                          onPressed: () {
-
-                            // NOTIFICATION SCREEN
-                          },
-
-                          icon: Icon(
-                            Icons.notifications_none,
-                            size: width * 0.07,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: height * 0.015),
-
-                    /// 🔹 WELCOME TEXT
-                    Text(
-                      "WELCOME ________ !",
-
-                      textAlign: TextAlign.center,
-
-                      style: TextStyle(
-                        fontSize: width * 0.055,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    SizedBox(height: height * 0.015),
-
-                    /// 🔹 SUBTITLE
-                    Text(
-                      "Subscribe below to get rides",
-
-                      textAlign: TextAlign.center,
-
-                      style: TextStyle(
-                        fontSize: width * 0.04,
-                        color: Colors.black87,
-                      ),
-                    ),
-
-                    SizedBox(height: height * 0.05),
-
-                    /// 🔹 PLAN BUTTONS
-                    _planButton(
-                      "6 hours - Rs 30",
-                      width,
-                      height,
-
-                          () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                            const PaymentsScreen(),
-                          ),
-                        );
-                      },
-                    ),
-
-                    SizedBox(height: height * 0.022),
-
-                    _planButton(
-                      "12 hours - Rs 35",
-                      width,
-                      height,
-
-                          () {},
-                    ),
-
-                    SizedBox(height: height * 0.022),
-
-                    _planButton(
-                      "18 hours - Rs 40",
-                      width,
-                      height,
-
-                          () {},
-                    ),
-
-                    SizedBox(height: height * 0.022),
-
-                    _planButton(
-                      "7 Days - Rs 250",
-                      width,
-                      height,
-
-                          () {},
-                    ),
-
-                    SizedBox(height: height * 0.022),
-
-                    _planButton(
-                      "30 Days - Rs 1000",
-                      width,
-                      height,
-
-                          () {},
-                    ),
-
-                    SizedBox(height: height * 0.05),
-
-                    /// 🔹 BOTTOM ROAD IMAGE
-                    Image.asset(
-                      'assets/Autoride3 1.png',
-
-                      width: width,
-                      fit: BoxFit.contain,
-                    ),
-
-                    SizedBox(height: height * 0.03),
-                  ],
-                ),
-              ),
+        child: Center(
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Color(0xFF1E1E1E),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  /// 🔹 REUSABLE PLAN BUTTON
-  Widget _planButton(
-      String text,
-      double width,
-      double height,
-      VoidCallback onTap,
-      ) {
+  @override
+  Widget build(BuildContext context) {
 
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.grey[300],
-        foregroundColor: Colors.black,
+    return Scaffold(
+      backgroundColor: Colors.white,
 
-        minimumSize:
-        Size(double.infinity, height * 0.065),
+      body: SafeArea(
+        child: Column(
+          children: [
 
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
+            /// HEADER
+            Container(
+              height: 99,
+              width: double.infinity,
+              color: const Color(0xFFFFD329),
 
-        elevation: 4,
-      ),
+              child: Row(
+                children: [
 
-      onPressed: onTap,
+                  const SizedBox(width: 15),
 
-      child: Text(
-        text,
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.menu,
+                      size: 35,
+                    ),
+                  ),
 
-        style: TextStyle(
-          fontSize: width * 0.042,
-          fontWeight: FontWeight.w500,
+                   Expanded(
+                    child: Text(AppText.getText("SUBSCRIPTION"),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.notifications_none,
+                      size: 35,
+                    ),
+                  ),
+
+                  const SizedBox(width: 15),
+                ],
+              ),
+            ),
+
+            /// BODY
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              color: const Color(0xFFEAEAEA),
+
+              child: Column(
+                children: [
+
+                  const SizedBox(height: 16),
+
+                   SizedBox(
+                    width: 301,
+                    child: Text(AppText.getText("Transparent Pricing, No Hidden fees or Commission"),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'InriaSerif',
+                        fontSize: 25,
+                        fontWeight: FontWeight.w400,
+                        height: 1.4,
+                        letterSpacing: -0.4,
+                        color: Color(0xCC000000), // 80% opacity black
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 90),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      planButton(
+                        "6 hours - 19 Rs/-",
+                        152,
+                      ),
+
+                      const SizedBox(width: 29),
+
+                      planButton(
+                        "12 hours - 29 Rs/-",
+                        161,
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 44),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      planButton(
+                        "3 days - 125 Rs/-",
+                        154,
+                      ),
+
+                      const SizedBox(width: 32),
+
+                      planButton(
+                        "7 days - 296 Rs/-",
+                        156,
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 44),
+
+                  Center(
+                    child: planButton(
+                      "1 month - 1259 Rs/-",
+                      174,
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+
+
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+
+                        child: Image.asset(
+                          "assets/road1.png",
+
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                    ),
+                  ),
+
+
+                ],
+              ),
+            ),
+          ),
+            /// FOOTER
+            Container(
+              height: 99,
+              width: double.infinity,
+              color: const Color(0xFF3C3A3A),
+
+              child: Center(
+                child: InkWell(
+                  onTap: () {
+
+                    /// API CALL LATER
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MapScreen(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: 290,
+                    height: 50.8,
+
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD9D9D9),
+                      borderRadius:
+                      BorderRadius.circular(
+                        25.3981,
+                      ),
+                    ),
+
+                    child: Center(
+                      child: Text(AppText.getText("Continue"),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

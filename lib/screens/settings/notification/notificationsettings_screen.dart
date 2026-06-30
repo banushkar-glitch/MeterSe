@@ -1,412 +1,577 @@
 import 'package:flutter/material.dart';
-import '../settings_screen.dart';
-class NotificationScreen extends StatelessWidget {
+
+class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-
-    final size = MediaQuery.of(context).size;
-
-    return Scaffold(
-      backgroundColor: const Color(0xFFE4C766),
-
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.04,
-            vertical: size.height * 0.015,
-          ),
-
-          child: Column(
-            children: [
-
-              /// 🔹 HEADER
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
-
-                children: [
-
-                  IconButton(
-                    onPressed: () {
-        Navigator.push(
-        context,
-        MaterialPageRoute(
-        builder: (context) => SettingsScreen(),
-        ),
-        );
-        },
-
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: size.width * 0.09,
-                      color: Colors.black,
-                    ),
-                  ),
-
-                  Text(
-                    "Notifications",
-
-                    style: TextStyle(
-                      fontSize: size.width * 0.06,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black,
-                    ),
-                  ),
-
-                  Icon(
-                    Icons.notifications_none,
-                    size: size.width * 0.07,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-
-              SizedBox(height: size.height * 0.01),
-
-              /// 🔹 SUBTITLE
-              Text(
-                "Stay updated with your latest activity\nand important alerts",
-
-                textAlign: TextAlign.center,
-
-                style: TextStyle(
-                  fontSize: size.width * 0.03,
-                  color: Colors.black87,
-                ),
-              ),
-
-              SizedBox(height: size.height * 0.02),
-
-              /// 🔹 MAIN CARD
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.04,
-                    vertical: size.height * 0.015,
-                  ),
-
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF2F2F2),
-
-                    borderRadius:
-                    BorderRadius.circular(20),
-                  ),
-
-                  child: Column(
-                    children: [
-
-                      /// 🔹 TOP BAR
-                      Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-
-                        children: [
-
-                          Text(
-                            "Today",
-
-                            style: TextStyle(
-                              fontSize: size.width * 0.03,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-
-                          Text(
-                            "Mark all as read",
-
-                            style: TextStyle(
-                              fontSize: size.width * 0.028,
-                              color: Colors.orange,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: size.height * 0.015),
-
-                      /// 🔹 NOTIFICATION LIST
-                      Expanded(
-                        child: ListView(
-                          physics:
-                          const BouncingScrollPhysics(),
-
-                          children: const [
-
-                            NotificationTile(
-                              title: "Payment Received",
-                              subtitle:
-                              "You have received 584 for trip to MG Road, Pune",
-                              time: "10:30 AM",
-                            ),
-
-                            NotificationTile(
-                              title: "New Ride Request",
-                              subtitle:
-                              "New ride request from Swarget to Katraj, Pune",
-                              time: "09:15 AM",
-                            ),
-
-                            NotificationTile(
-                              title: "Document Expiring Soon",
-                              subtitle:
-                              "Your Driving License will expire on 12 May 2025",
-                              time: "Yesterday",
-                            ),
-
-                            NotificationTile(
-                              title: "Special Offer",
-                              subtitle:
-                              "Complete 20 rides this week and get extra 300 bonus",
-                              time: "2 May 2025",
-                            ),
-
-                            NotificationTile(
-                              title: "Account Verified",
-                              subtitle:
-                              "Congratulations! Your account has been successfully verified.",
-                              time: "1 May 2025",
-                            ),
-
-                            NotificationTile(
-                              title: "Weekly Earnings",
-                              subtitle:
-                              "You earned ₹4,520 this week successfully.",
-                              time: "30 Apr 2025",
-                            ),
-
-                            NotificationTile(
-                              title: "Trip Completed",
-                              subtitle:
-                              "Your recent ride has been completed successfully.",
-                              time: "29 Apr 2025",
-                            ),
-
-                            NotificationTile(
-                              title: "New Update Available",
-                              subtitle:
-                              "Update app now for better performance.",
-                              time: "28 Apr 2025",
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: size.height * 0.015),
-
-                      /// 🔹 BOTTOM BOX
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.03,
-                          vertical: size.height * 0.015,
-                        ),
-
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey.shade400,
-                          ),
-
-                          borderRadius:
-                          BorderRadius.circular(12),
-                        ),
-
-                        child: Row(
-                          children: [
-
-                            Icon(
-                              Icons.notifications_active_outlined,
-                              size: size.width * 0.08,
-                            ),
-
-                            SizedBox(width: size.width * 0.03),
-
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-
-                                children: [
-
-                                  Text(
-                                    "Enable Push Notifications",
-
-                                    style: TextStyle(
-                                      fontSize:
-                                      size.width * 0.032,
-                                      fontWeight:
-                                      FontWeight.w600,
-                                    ),
-                                  ),
-
-                                  SizedBox(
-                                      height:
-                                      size.height * 0.003),
-
-                                  Text(
-                                    "Get real-time updates and never miss important alerts",
-
-                                    style: TextStyle(
-                                      fontSize:
-                                      size.width * 0.026,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-
-                            SizedBox(width: size.width * 0.02),
-
-                            ElevatedButton(
-                              onPressed: () {},
-
-                              style:
-                              ElevatedButton.styleFrom(
-                                backgroundColor:
-                                const Color(0xFF4A423F),
-
-                                shape:
-                                RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius.circular(
-                                      8),
-                                ),
-
-                                padding:
-                                EdgeInsets.symmetric(
-                                  horizontal:
-                                  size.width * 0.03,
-                                  vertical:
-                                  size.height * 0.012,
-                                ),
-                              ),
-
-                              child: Text(
-                                "Update Now",
-
-                                style: TextStyle(
-                                  fontSize:
-                                  size.width * 0.025,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-/// 🔹 REUSABLE NOTIFICATION TILE
-class NotificationTile extends StatelessWidget {
+class _NotificationScreenState extends State<NotificationScreen> {
 
-  final String title;
-  final String subtitle;
-  final String time;
+  //////////////////////////////////////////////////////
+  /// BACKEND LIST (Replace with API later)
+  //////////////////////////////////////////////////////
 
-  const NotificationTile({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.time,
-  });
+  List<NotificationModel> notifications = [
+
+    NotificationModel(
+      title: "Payment Received",
+      message: "You have received ₹584 for trip to MG Road, Pune",
+      time: "10:30 AM",
+      isRead: false,
+    ),
+
+    NotificationModel(
+      title: "New Ride Request",
+      message: "New ride request from Swargate to Katraj, Pune",
+      time: "09:15 AM",
+      isRead: false,
+    ),
+
+    NotificationModel(
+      title: "Document Expiring Soon",
+      message: "Your Driving License will expire on 12 May 2025",
+      time: "Yesterday",
+      isRead: true,
+    ),
+
+    NotificationModel(
+      title: "Special Offer",
+      message: "Complete 20 rides this week and get extra ₹300 bonus",
+      time: "2 May 2025",
+      isRead: true,
+    ),
+
+    NotificationModel(
+      title: "Account Verified",
+      message: "Congratulations! Your account has been successfully verified.",
+      time: "1 May 2025",
+      isRead: true,
+    ),
+
+  ];
+
+  //////////////////////////////////////////////////////
+  /// MARK ALL READ
+  //////////////////////////////////////////////////////
+
+  void markAllRead() {
+
+    setState(() {
+
+      for (var item in notifications) {
+        item.isRead = true;
+      }
+
+    });
+
+    /// BACKEND API
+    /// Call Mark All Read API here
+
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    final size = MediaQuery.of(context).size;
+    return Scaffold(
 
-    return Column(
-      children: [
+      resizeToAvoidBottomInset: false,
 
-        Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: size.height * 0.012,
-          ),
+      body: SafeArea(
 
-          child: Row(
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
+        child: Column(
 
-            children: [
+          children: [
 
-              /// 🔹 TEXTS
-              Expanded(
+            //////////////////////////////////////////////////////
+            /// HEADER
+            //////////////////////////////////////////////////////
+
+            Container(
+
+              height: 99,
+              width: double.infinity,
+              color: const Color(0xFFFFD329),
+
+              child: Row(
+
+                children: [
+
+                  const SizedBox(width: 12),
+
+                  IconButton(
+
+                    onPressed: () {
+
+                      Navigator.pop(context);
+
+                      /// BACKEND (optional)
+
+                    },
+
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 38,
+                      color: Colors.black,
+                    ),
+
+                  ),
+
+                  const Expanded(
+
+                    child: Text(
+
+                      "Notifications",
+
+                      textAlign: TextAlign.center,
+
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+
+                    ),
+
+                  ),
+
+                  IconButton(
+
+                    onPressed: () {
+
+                      /// Notification API
+
+                    },
+
+                    icon: const Icon(
+                      Icons.notifications_none,
+                      size: 38,
+                      color: Colors.black,
+                    ),
+
+                  ),
+
+                  const SizedBox(width: 12),
+
+                ],
+
+              ),
+
+            ),
+
+            //////////////////////////////////////////////////////
+            /// BODY
+            //////////////////////////////////////////////////////
+
+            Expanded(
+
+              child: Container(
+
+                color: const Color(0xFFEAEAEA),
+
                 child: Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.start,
+
+                  children: [
+
+                    Padding(
+
+                      padding: const EdgeInsets.only(
+                        top: 12,
+                        left: 20,
+                        right: 20,
+                      ),
+
+                      child: Row(
+
+                        mainAxisAlignment:
+                        MainAxisAlignment.end,
+
+                        children: [
+
+                          GestureDetector(
+
+                            onTap: markAllRead,
+
+                            child: const Text(
+
+                              "Mark all as read",
+
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFFF2D564),
+                                fontWeight: FontWeight.w500,
+                              ),
+
+                            ),
+
+                          ),
+
+                        ],
+
+                      ),
+
+                    ),
+
+                    const Divider(),
+
+                    Expanded(
+
+                      child: ListView.builder(
+
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+
+                        itemCount: notifications.length + 1,
+
+                        itemBuilder: (context, index) {
+
+                          if (index == notifications.length) {
+                            return pushNotificationContainer();
+                          }
+
+                          return notificationTile(notifications[index]);
+
+                        },
+
+                      ),
+
+                    ),
+
+                  ],
+
+                ),
+
+              ),
+
+            ),
+
+            //////////////////////////////////////////////////////
+            /// FOOTER
+            //////////////////////////////////////////////////////
+
+            Container(
+
+              height: 99,
+              width: double.infinity,
+              color: const Color(0xFF3C3A3A),
+
+            ),
+
+          ],
+
+        ),
+
+      ),
+
+    );
+
+  }
+  ////////////////////////////////////////////////////////
+  /// NOTIFICATION TILE
+////////////////////////////////////////////////////////
+
+  Widget notificationTile(NotificationModel item) {
+
+    return InkWell(
+
+      onTap: () {
+
+        setState(() {
+          item.isRead = true;
+        });
+
+        /////////////////////////////////////////////////////
+        /// BACKEND API
+        /// Open Notification Details Screen
+        /////////////////////////////////////////////////////
+
+      },
+
+      child: Padding(
+
+        padding: const EdgeInsets.symmetric(
+          vertical: 10,
+        ),
+
+        child: Column(
+
+          children: [
+
+            Row(
+
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+
+                Expanded(
+
+                  child: Column(
+
+                    crossAxisAlignment:
+                    CrossAxisAlignment.start,
+
+                    children: [
+
+                      Text(
+
+                        item.title,
+
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+
+                      ),
+
+                      const SizedBox(height: 6),
+
+                      Text(
+
+                        item.message,
+
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black87,
+                          height: 1.3,
+                        ),
+
+                      ),
+
+                    ],
+
+                  ),
+
+                ),
+
+                const SizedBox(width: 15),
+
+                Column(
 
                   children: [
 
                     Text(
-                      title,
 
-                      style: TextStyle(
-                        fontSize: size.width * 0.034,
-                        fontWeight: FontWeight.w600,
+                      item.time,
+
+                      style: const TextStyle(
+                        fontSize: 12,
                       ),
+
                     ),
 
-                    SizedBox(height: size.height * 0.004),
+                    const SizedBox(height: 12),
 
-                    Text(
-                      subtitle,
+                    item.isRead
 
-                      style: TextStyle(
-                        fontSize: size.width * 0.029,
-                        color: Colors.black87,
-                        height: 1.3,
+                        ? const SizedBox(
+                      width: 15,
+                      height: 15,
+                    )
+
+                        : Container(
+
+                      width: 15,
+                      height: 15,
+
+                      decoration: const BoxDecoration(
+
+                        color: Color(0xFFF2D564),
+
+                        shape: BoxShape.circle,
+
                       ),
+
                     ),
+
                   ],
+
                 ),
-              ),
 
-              SizedBox(width: size.width * 0.03),
+              ],
 
-              /// 🔹 TIME + DOT
-              Column(
-                children: [
+            ),
 
-                  Text(
-                    time,
+            const SizedBox(height: 15),
 
-                    style: TextStyle(
-                      fontSize: size.width * 0.026,
-                      color: Colors.black54,
-                    ),
-                  ),
+            const Divider(),
 
-                  SizedBox(height: size.height * 0.01),
+          ],
 
-                  CircleAvatar(
-                    radius: size.width * 0.012,
-                    backgroundColor: Colors.amber,
-                  ),
-                ],
-              ),
-            ],
-          ),
         ),
 
-        Divider(
-          color: Colors.grey.shade400,
-          thickness: 1,
-        ),
-      ],
+      ),
+
     );
+
   }
+
+  ////////////////////////////////////////////////////////
+  /// PUSH NOTIFICATION CONTAINER
+////////////////////////////////////////////////////////
+
+  Widget pushNotificationContainer() {
+
+    return Container(
+
+      margin: const EdgeInsets.only(
+        top: 8,
+        bottom: 15,
+      ),
+
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 12,
+      ),
+
+      decoration: BoxDecoration(
+
+        color: Colors.white,
+
+        borderRadius: BorderRadius.circular(10),
+
+      ),
+
+      child: Row(
+
+        children: [
+
+          //////////////////////////////////////////////////
+          /// ICON
+          //////////////////////////////////////////////////
+
+          const Icon(
+            Icons.notifications_none,
+            size: 30,
+            color: Colors.black,
+          ),
+
+          const SizedBox(width: 12),
+
+          //////////////////////////////////////////////////
+          /// TEXT
+          //////////////////////////////////////////////////
+
+          const Expanded(
+
+            child: Column(
+
+              crossAxisAlignment:
+              CrossAxisAlignment.start,
+
+              children: [
+
+                Text(
+
+                  "Enable Push Notifications",
+
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                  ),
+
+                ),
+
+                SizedBox(height: 2),
+
+                Text(
+
+                  "Get real-time updates and never\nmiss important alerts",
+
+                  style: TextStyle(
+                    fontSize: 9,
+                    color: Colors.black54,
+                    height: 1.2,
+                  ),
+
+                ),
+
+              ],
+
+            ),
+
+          ),
+
+          //////////////////////////////////////////////////
+          /// UPDATE BUTTON
+          //////////////////////////////////////////////////
+
+          SizedBox(
+
+            width: 72,
+            height: 28,
+
+            child: ElevatedButton(
+
+              onPressed: () {
+
+                ////////////////////////////////////////////
+                /// BACKEND API
+                /// Enable Push Notification API
+                ////////////////////////////////////////////
+
+              },
+
+              style: ElevatedButton.styleFrom(
+
+                backgroundColor: const Color(0xFF4C4545),
+
+                padding: EdgeInsets.zero,
+
+                shape: RoundedRectangleBorder(
+
+                  borderRadius:
+                  BorderRadius.circular(5),
+
+                ),
+
+              ),
+
+              child: const Text(
+
+                "Update Now",
+
+                style: TextStyle(
+                  fontSize: 9,
+                  color: Colors.white,
+                ),
+
+              ),
+
+            ),
+
+          ),
+
+        ],
+
+      ),
+
+    );
+
+  }
+
+}
+////////////////////////////////////////////////////////
+/// NOTIFICATION MODEL
+////////////////////////////////////////////////////////
+
+class NotificationModel {
+
+  final String title;
+  final String message;
+  final String time;
+
+  bool isRead;
+
+  NotificationModel({
+
+    required this.title,
+    required this.message,
+    required this.time,
+    required this.isRead,
+
+  });
+
 }

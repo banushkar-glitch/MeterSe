@@ -12,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LanguageScreen()),
@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xFFE3C65A),
+      backgroundColor: const Color(0xFFFFD329),
 
       body: SafeArea(
         child: Column(
@@ -36,35 +36,38 @@ class _SplashScreenState extends State<SplashScreen> {
 
             //  BIG ANIMATION GIF
             Expanded(
-              flex: 7,
+              flex: 18,
               child: Center(
                 child: Image.asset(
-                  'assets/animation1.gif',   // oUR GIF
-                  width: width * 0.75,
+                  'assets/animation3.gif',   // oUR GIF
+                  width: width * 1.4,
                   fit: BoxFit.contain,
                 ),
               ),
             ),
 
             //  TAGLINE TEXT
-            Expanded(
-              flex: 3,
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.1),
-                  child: Text(
-                    "APNA METER,\nAPNI KAMAI!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: width * 0.08,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.2,
-                    ),
+        SizedBox(
+          height: height * 0.20,
+          child: Transform.translate(
+            offset: Offset(0, -120), // increase to move text more up
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+              child: Text(
+                  "APNA METER,\nAPNI KAMAI!",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'InriaSerif',
+                    fontSize: 40,
+                    fontWeight: FontWeight.w400,
+                    height: 1.4,
+                    letterSpacing: -0.4,
+                    color: Colors.black,
                   ),
                 ),
               ),
             ),
-
+        ),
           ],
         ),
       ),

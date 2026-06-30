@@ -1,241 +1,492 @@
 import 'package:flutter/material.dart';
 import '../settings_screen.dart';
+
 class PersonalInfoScreen extends StatefulWidget {
   const PersonalInfoScreen({super.key});
 
   @override
-  State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
+  State<PersonalInfoScreen> createState() =>
+      _PersonalInfoScreenState();
 }
 
-class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
+class _PersonalInfoScreenState
+    extends State<PersonalInfoScreen> {
+
   final _formKey = GlobalKey<FormState>();
 
-  final name = TextEditingController();
-  final phone = TextEditingController();
-  final dob = TextEditingController();
-  final license = TextEditingController();
-  final vehicle = TextEditingController();
-  final address = TextEditingController();
+  final fullNameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final dobController = TextEditingController();
+  final licenseController = TextEditingController();
+  final vehicleController = TextEditingController();
+  final addressController = TextEditingController();
+
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    phoneController.dispose();
+    dobController.dispose();
+    licenseController.dispose();
+    vehicleController.dispose();
+    addressController.dispose();
+    super.dispose();
+  }
+
+  Future<void> pickDate() async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1950),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      dobController.text =
+      "${picked.day}/${picked.month}/${picked.year}";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFE4C766),
-      body: SafeArea(
-        child: Column(
-          children: [
-            /// 🔹 HEADER
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                  onPressed: () {
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
 
-                      Navigator.pop(
-                             context,
-                   MaterialPageRoute(
-                builder: (context) =>  SettingsScreen(),
+      child:Scaffold(
+        resizeToAvoidBottomInset: false,
+
+        body: SafeArea(
+          child: Column(
+            children: [
+
+              /// HEADER
+              Container(
+                height: 99,
+                width: double.infinity,
+                color: const Color(0xFFFFD329),
+
+                child: Row(
+                  children: [
+
+                    const SizedBox(width: 10),
+
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        size: 35,
+                        color: Colors.black,
+                      ),
+                    ),
+
+                    const Expanded(
+                      child: Text(
+                        "Personal Information",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+
+                    IconButton(
+                      onPressed: () {
+
+                        /// NOTIFICATION API
+
+                      },
+                      icon: const Icon(
+                        Icons.notifications_none,
+                        size: 35,
+                        color: Colors.black,
+                      ),
+                    ),
+
+                    const SizedBox(width: 10),
+                  ],
                 ),
-               );
-
-             },
-        icon: Icon(
-          Icons.arrow_back,
-          size: size.width * 0.09,
-          color: Colors.black,
-                    ),
-                  ),
-        const Text(
-                    "Personal Information",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const Icon(Icons.notifications_none),
-                ],
               ),
-            ),
 
-            const SizedBox(height: 10),
-
-            /// 🔹 CARD AREA
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+              /// BODY
+              Expanded(
                 child: Container(
-                  padding: EdgeInsets.all(size.width * 0.04),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFEFEFEF),
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: Column(
-                    children: [
-                      /// PROFILE
-                      Column(
-                        children: const [
-                          Icon(Icons.person_outline, size: 60),
-                          SizedBox(height: 6),
-                          Text(
-                            "Tap to change profile photo",
-                            style: TextStyle(fontSize: 13),
+                  color: const Color(0xFFEAEAEA),
+
+                  child: SingleChildScrollView(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 20),
+
+                    child: Form(
+                      key: _formKey,
+
+                      child: Column(
+                        children: [
+
+                          const SizedBox(height: 15),
+
+                          /// PROFILE IMAGE
+                          InkWell(
+                            onTap: () {
+
+                              /// PICK IMAGE API
+
+                            },
+                            child: const CircleAvatar(
+                              radius: 45,
+                              backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
+
+                          const SizedBox(height: 8),
+
+                          const Text(
+                            "Tap to change profile photo",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+
+                          const SizedBox(height: 15),
+
+                          buildField(
+                            label: "Full Name",
+                            icon: Icons.badge,
+                            controller: fullNameController,
+                          ),
+
+                          buildField(
+                            label: "Phone Number",
+                            icon: Icons.phone,
+                            controller: phoneController,
+                            keyboard:
+                            TextInputType.phone,
+                          ),
+
+                          buildDateField(),
+
+                          buildField(
+                            label:
+                            "Driving License Number",
+                            icon: Icons.credit_card,
+                            controller:
+                            licenseController,
+                          ),
+
+                          buildField(
+                            label: "Vehicle Number",
+                            icon:
+                            Icons.directions_car,
+                            controller:
+                            vehicleController,
+                          ),
+
+                          buildAddressField(),
+
+                          const SizedBox(height: 10),
+
+                          /// SAVE BUTTON
+                          InkWell(
+                            onTap: () {
+
+                              if (_formKey.currentState!
+                                  .validate()) {
+
+                                /// SAVE API HERE
+
+                                print(
+                                    fullNameController
+                                        .text);
+
+                                print(
+                                    phoneController
+                                        .text);
+
+                                print(
+                                    dobController.text);
+
+                                print(
+                                    licenseController
+                                        .text);
+
+                                print(
+                                    vehicleController
+                                        .text);
+
+                                print(
+                                    addressController
+                                        .text);
+                              }
+                            },
+
+                            child: Container(
+                              width: 209,
+                              height: 45,
+
+                              decoration: BoxDecoration(
+                                color:
+                                const Color(
+                                    0xFFD9D9D9),
+                                borderRadius:
+                                BorderRadius.circular(
+                                    25),
+                              ),
+
+                              child: const Center(
+                                child: Text(
+                                  "Save",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
                         ],
                       ),
-
-                      const SizedBox(height: 15),
-
-                      /// FORM
-                      Expanded(
-                        child: Form(
-                          key: _formKey,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                InputField(
-                                  icon: Icons.badge_outlined,
-                                  label: "Full Name",
-                                  controller: name,
-                                ),
-                                InputField(
-                                  icon: Icons.phone,
-                                  label: "Phone Number",
-                                  controller: phone,
-                                ),
-                                InputField(
-                                  icon: Icons.calendar_month,
-                                  label: "Date Of Birth",
-                                  controller: dob,
-                                ),
-                                InputField(
-                                  icon: Icons.credit_card,
-                                  label: "Driving License Number",
-                                  controller: license,
-                                ),
-                                InputField(
-                                  icon: Icons.directions_car,
-                                  label: "Vehicle Number",
-                                  controller: vehicle,
-                                ),
-                                InputField(
-                                  icon: Icons.location_on,
-                                  label: "Address",
-                                  controller: address,
-                                  maxLines: 2,
-                                ),
-
-                                SizedBox(height: size.height * 0.02),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      /// 🔹 BUTTON
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              // API call / save logic
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF4A423F),
-                            padding: EdgeInsets.symmetric(
-                                vertical: size.height * 0.018),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                          ),
-                          child: const Text(
-                            "Save Changes",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+
+              /// FOOTER
+              Container(
+                width: double.infinity,
+                height: 99,
+                color: const Color(0xFF3C3A3A),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-}
 
-/// 🔹 REUSABLE INPUT FIELD (FIGMA STYLE)
-class InputField extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final TextEditingController controller;
-  final int maxLines;
-
-  const InputField({
-    super.key,
-    required this.icon,
-    required this.label,
-    required this.controller,
-    this.maxLines = 1,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
+  Widget buildField({
+    required String label,
+    required IconData icon,
+    required TextEditingController controller,
+    TextInputType keyboard =
+        TextInputType.text,
+  }) {
     return Padding(
-      padding: EdgeInsets.only(bottom: size.height * 0.018),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: size.height * 0.025),
-            child: Icon(icon, size: 22),
-          ),
-          SizedBox(width: size.width * 0.03),
+      padding: const EdgeInsets.only(bottom: 12),
 
-          /// TEXT FIELD COLUMN
+      child: Row(
+        crossAxisAlignment:
+        CrossAxisAlignment.start,
+        children: [
+
+          Padding(
+            padding:
+            const EdgeInsets.only(top: 32),
+            child: Icon(icon, size: 32),
+          ),
+
+          const SizedBox(width: 10),
+
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+              CrossAxisAlignment.start,
               children: [
+
                 Text(
                   label,
                   style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
                   ),
                 ),
-                const SizedBox(height: 6),
-                TextFormField(
-                  controller: controller,
-                  maxLines: maxLines,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.03,
-                      vertical: size.height * 0.014,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+
+                const SizedBox(height: 5),
+
+                SizedBox(
+                  height: 65,
+
+                  child: TextFormField(
+                    controller: controller,
+                    keyboardType: keyboard,
+
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty) {
+                        return "Required";
+                      }
+                      return null;
+                    },
+
+                    decoration:
+                    InputDecoration(
+                      border:
+                      OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(
+                            10),
+                      ),
+                      contentPadding:
+                      const EdgeInsets
+                          .symmetric(
+                        horizontal: 10,
+                      ),
+                      errorStyle: const TextStyle(
+                        height: 0.8,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
-                  validator: (val) =>
-                  val == null || val.isEmpty ? "Required" : null,
                 ),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildDateField() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+
+      child: Row(
+        crossAxisAlignment:
+        CrossAxisAlignment.start,
+        children: [
+
+          const Padding(
+            padding:
+            EdgeInsets.only(top: 32),
+            child: Icon(
+              Icons.calendar_month,
+              size: 32,
+            ),
+          ),
+
+          const SizedBox(width: 10),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment:
+              CrossAxisAlignment.start,
+              children: [
+
+                const Text(
+                  "Date Of Birth",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+
+                const SizedBox(height: 5),
+
+                SizedBox(
+                  height: 65,
+
+                  child: TextFormField(
+                    controller: dobController,
+                    readOnly: true,
+
+                    onTap: pickDate,
+
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty) {
+                        return "Required";
+                      }
+                      return null;
+                    },
+
+                    decoration:
+                    InputDecoration(
+                      border:
+                      OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.circular(
+                            10),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildAddressField() {
+    return Row(
+      crossAxisAlignment:
+      CrossAxisAlignment.start,
+      children: [
+
+        const Padding(
+          padding: EdgeInsets.only(top: 35),
+          child: Icon(
+            Icons.location_on,
+            size: 32,
+          ),
+        ),
+
+        const SizedBox(width: 10),
+
+        Expanded(
+          child: Column(
+            crossAxisAlignment:
+            CrossAxisAlignment.start,
+            children: [
+
+              const Text(
+                "Address",
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
+
+              const SizedBox(height: 5),
+
+              SizedBox(
+                height: 76,
+
+                child: TextFormField(
+                  controller:
+                  addressController,
+                  maxLines: 3,
+
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty) {
+                      return "Required";
+                    }
+                    return null;
+                  },
+
+                  decoration:
+                  InputDecoration(
+                    border:
+                    OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.circular(
+                          10),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

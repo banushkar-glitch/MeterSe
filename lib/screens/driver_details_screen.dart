@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'accountcreated_screen.dart';
-
+import '../utils/app_text.dart';
 class DriverDetailsScreen extends StatefulWidget {
   const DriverDetailsScreen({super.key});
 
@@ -12,353 +12,532 @@ class DriverDetailsScreen extends StatefulWidget {
 class _DriverDetailsScreenState
     extends State<DriverDetailsScreen> {
 
-  bool isChecked = false;
+  String? selectedGender;
+  String? criminalRecord;
+
+  bool isTermsAccepted = false;
+
+  DateTime? selectedDate;
+
+  final TextEditingController batchNumberController =
+  TextEditingController();
+
+  final TextEditingController vehicleTypeController =
+  TextEditingController();
 
   @override
   Widget build(BuildContext context) {
 
-    final size = MediaQuery.of(context).size;
-    final width = size.width;
-    final height = size.height;
-
     return Scaffold(
-      backgroundColor: const Color(0xFFE3C65A),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0xFFEAEAEA),
 
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
 
-          padding: EdgeInsets.symmetric(
-            horizontal: width * 0.08,
-            vertical: height * 0.015,
-          ),
+            /// HEADER
+            Container(
+              height: 99,
+              width: double.infinity,
+              color: const Color(0xFFFFD329),
 
-          child: Column(
-            children: [
-
-              /// TOP BAR
-              Row(
+              child: Row(
                 children: [
+
+                  const SizedBox(width: 10),
 
                   IconButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back,
-                      size: width * 0.065,
+                      size: 35,
+                      color: Colors.black,
                     ),
                   ),
 
-                  Expanded(
-                    child: Text(
-                      "Details",
+                   Expanded(
+                    child: Text(AppText.getText("Personal Details"),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: width * 0.05,
-                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Geologica',
+                        fontSize: 28,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        letterSpacing: 0,
                       ),
                     ),
                   ),
 
                   IconButton(
-                    onPressed: () {
-                      // TODO Notification Screen
-                    },
-                    icon: Icon(
+                    onPressed: () {},
+                    icon: const Icon(
                       Icons.notifications_none,
-                      size: width * 0.06,
+                      size: 28,
+                      color: Colors.black,
                     ),
                   ),
+
+                  const SizedBox(width: 10),
                 ],
               ),
+            ),
 
-              SizedBox(height: height * 0.08),
-
-              /// BIRTH DATE
-              _dateField(width),
-
-              SizedBox(height: height * 0.04),
-
-              /// BATCH NO
-              _inputField(
-                hint: "Batch no. (optional)",
-                width: width,
-              ),
-
-              SizedBox(height: height * 0.04),
-
-              /// VEHICLE TYPE
-              _inputField(
-                hint: "Vehicle type",
-                width: width,
-              ),
-
-              SizedBox(height: height * 0.05),
-
-              /// GENDER
-              Container(
+            /// BODY AREA
+            Expanded(
+              child: Container(
                 width: double.infinity,
-
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.03,
-                  vertical: height * 0.01,
-                ),
-
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius:
-                  BorderRadius.circular(8),
-                  border:
-                  Border.all(color: Colors.black54),
-                ),
-
-                child: Row(
-                  children: [
-
-                    Text(
-                      "Gender",
-                      style: TextStyle(
-                        fontSize: width * 0.04,
-                      ),
-                    ),
-
-                    const Spacer(),
-
-                    _smallButton("Male"),
-
-                    SizedBox(width: width * 0.02),
-
-                    _smallButton("Female"),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: height * 0.05),
-
-              /// CRIMINAL RECORD
-              Container(
-                width: double.infinity,
-
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.03,
-                  vertical: height * 0.015,
-                ),
-
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius:
-                  BorderRadius.circular(8),
-                  border:
-                  Border.all(color: Colors.black54),
-                ),
+                color: const Color(0xFFEAEAEA),
 
                 child: Column(
                   children: [
 
-                    Text(
-                      "Do you have a criminal record?",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: width * 0.04,
+                    const SizedBox(height: 83),
+
+                GestureDetector(
+                  onTap: () async {
+
+                    DateTime? pickedDate =
+                    await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1950),
+                      lastDate: DateTime.now(),
+                    );
+
+                    if (pickedDate != null) {
+                      setState(() {
+                        selectedDate = pickedDate;
+                      });
+                    }
+                  },
+
+                  child: Container(
+                    width: 303,
+                    height: 49,
+
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                      borderRadius: BorderRadius.circular(11),
+                    ),
+
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ),
+
+                      child: Row(
+                        children: [
+
+                          Expanded(
+                            child: Text(
+                              selectedDate == null
+                                  ? AppText.getText("Date of Birth")
+                                  : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
+                              style: TextStyle(
+                                fontFamily: 'InriaSerif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                height: 1.4,
+                                letterSpacing: -0.4,
+                                color: Color(0xCC000000), // 80% opacity black
+                              ),
+                            ),
+                          ),
+
+                          const Icon(
+                            Icons.calendar_today_outlined,
+                            size: 24,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+
+
+                    const SizedBox(height: 41),
+
+                    Container(
+                      width: 303,
+                      height: 50,
+
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+
+                        borderRadius: BorderRadius.circular(11),
+                      ),
+
+                      child:  Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                        ),
+
+                        child: Row(
+                          children: [
+
+                            Text(AppText.getText("Batch Number"),
+                              style: TextStyle(
+                                fontFamily: 'InriaSerif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                height: 1.4,
+                                letterSpacing: -0.4,
+                                color: Color(0xCC000000), // 80% opacity black
+                              ),
+                            ),
+
+                            SizedBox(width: 4),
+
+                            Text(
+                              "(optional)",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
 
-                    SizedBox(height: height * 0.015),
+                    const SizedBox(height: 41),
+
+
+                GestureDetector(
+                  onTap: () {
+                    print("Vehicle Type Clicked");
+                  },
+                  child: Container(
+                      width: 303,
+                      height: 49,
+
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+
+                        borderRadius: BorderRadius.circular(9),
+                      ),
+
+                      child:  Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                        ),
+
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(AppText.getText("Vehicle Type"),
+                            style: TextStyle(
+                              fontFamily: 'InriaSerif',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              height: 1.4,
+                              letterSpacing: -0.4,
+                              color: Color(0xCC000000), // 80% opacity black
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                    const SizedBox(height: 41),
+
+                    Container(
+                      width: 303,
+                      height: 49,
+
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.black,
+                        ),
+                        borderRadius: BorderRadius.circular(9),
+                      ),
+
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                        ),
+
+                        child: Row(
+                          children: [
+
+                          Text(AppText.getText("Gender"),
+                              style: TextStyle(
+                                fontFamily: 'InriaSerif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                height: 1.4,
+                                letterSpacing: -0.4,
+                                color: Color(0xCC000000), // 80% opacity black
+                              ),
+                            ),
+
+                            const Spacer(),
+
+                            Container(
+                              width: 92,
+                              height: 28,
+
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF5F3EB),
+                                borderRadius: BorderRadius.circular(9),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 2,
+                                    offset: Offset(0, 2),
+                                    color: Colors.black26,
+                                  ),
+                                ],
+                              ),
+
+                              child: Center(
+                                child: Text(AppText.getText("Male"),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(width: 12),
+
+                            Container(
+                              width: 92,
+                              height: 28,
+
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF5F3EB),
+                                borderRadius: BorderRadius.circular(9),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 4,
+                                    offset: Offset(0, 4),
+                                    color: Colors.black26,
+                                  ),
+                                ],
+                              ),
+
+                              child: Center(
+                                child: Text(AppText.getText("Female"),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 41),
+
+                    Container(
+                      width: 303,
+                      height: 83,
+
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(9),
+                      ),
+
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
+                        ),
+
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                             Text(AppText.getText("Do you have a criminal record?"),
+                              style: TextStyle(
+                                fontFamily: 'InriaSerif',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                height: 1.4,
+                                letterSpacing: -0.4,
+                                color: Color(0xCC000000), // 80% opacity black
+                              ),
+                            ),
+
+                            const SizedBox(height: 10),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+
+                                Container(
+                                  width: 92,
+                                  height: 28,
+
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF5F3EB),
+                                    borderRadius: BorderRadius.circular(9),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        blurRadius: 4,
+                                        offset: Offset(0, 4),
+                                        color: Colors.black26,
+                                      ),
+                                    ],
+                                  ),
+
+                                  child:  Center(
+                                    child: Text(AppText.getText("Yes"),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(width: 12),
+
+                                Container(
+                                  width: 92,
+                                  height: 28,
+
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF5F3EB),
+                                    borderRadius: BorderRadius.circular(9),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        blurRadius: 4,
+                                        offset: Offset(0, 4),
+                                        color: Colors.black26,
+                                      ),
+                                    ],
+                                  ),
+
+                                  child: Center(
+                                    child: Text(AppText.getText("No"),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 22),
 
                     Row(
-                      mainAxisAlignment:
-                      MainAxisAlignment.center,
-
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        _smallButton("YES"),
+                        const SizedBox(width: 45),
 
-                        SizedBox(
-                            width: width * 0.03),
+                        Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
 
-                        _smallButton("NO"),
+                        const SizedBox(width: 15),
+
+                         SizedBox(
+                          width: 250,
+                          child: Text(AppText.getText("I have read and agree to the Terms & Conditions and Privacy Policy."),
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 1.4,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
+
                   ],
                 ),
               ),
+            ),
 
-              SizedBox(height: height * 0.05),
+            /// FOOTER
+            GestureDetector(
+              onTap: () {
+                // YOUR ACTION HERE
 
-              /// TERMS
-              Row(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
-
-                children: [
-
-                  Transform.scale(
-                    scale: 0.9,
-                    child: Checkbox(
-                      value: isChecked,
-                      onChanged: (value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                    ),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AccountCreated(),
                   ),
+                );
+              },
 
-                  Expanded(
-                    child: Padding(
-                      padding:
-                      EdgeInsets.only(top: 12),
-                      child: Text(
-                        "I have read and agree to the Terms & Conditions and Privacy Policy.",
+              child: Container(
+                height: 99,
+                width: double.infinity,
+                color: const Color(0xFF3C3A3A),
+
+                child: Center(
+                  child: Container(
+                    width: 290,
+                    height: 50.8,
+
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFD9D9D9),
+                      borderRadius: BorderRadius.circular(
+                        25.3981,
+                      ),
+                    ),
+
+                    child: Center(
+                      child: Text(AppText.getText("Submit"),
                         style: TextStyle(
-                          fontSize: width * 0.03,
+                          fontFamily: 'InriaSerif',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          height: 1.4,
+                          letterSpacing: -0.4,
+                          color: Color(0xCC000000),
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: height * 0.03),
-
-              /// SUBMIT BUTTON
-              SizedBox(
-                width: width * 0.42,
-                height: height * 0.055,
-
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                    Colors.grey.shade300,
-                    foregroundColor: Colors.black,
-
-                    elevation: 3,
-
-                    shape:
-                    RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius.circular(10),
-                    ),
-                  ),
-
-                  onPressed: () {
-
-                    // 🔥 API SPACE
-                    // TODO Backend
-
-                    if (!isChecked) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            "Please accept Terms & Conditions",
-                          ),
-                        ),
-                      );
-                      return;
-                    }
-                    // ✅ NAVIGATION HERE
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AccountCreated(),
-                      ),
-                    );
-
-
-                  },
-
-                  child: Text(
-                    "SUBMIT",
-                    style: TextStyle(
-                      fontSize: width * 0.035,
-                      fontWeight:
-                      FontWeight.w500,
                     ),
                   ),
                 ),
               ),
-
-              SizedBox(height: height * 0.03),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
-    );
-  }
-
-  /// DATE FIELD
-  Widget _dateField(double width) {
-    return Container(
-      padding:
-      const EdgeInsets.symmetric(horizontal: 12),
-
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.black54),
-      ),
-
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: "Birth Date",
-          border: InputBorder.none,
-
-          suffixIcon: Icon(
-            Icons.calendar_month,
-            size: width * 0.06,
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// INPUT FIELD
-  Widget _inputField({
-    required String hint,
-    required double width,
-  }) {
-    return Container(
-      padding:
-      const EdgeInsets.symmetric(horizontal: 12),
-
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.black54),
-      ),
-
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: hint,
-          border: InputBorder.none,
-        ),
-      ),
-    );
-  }
-
-  /// SMALL BUTTON
-  Widget _smallButton(String text) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-
-        elevation: 2,
-
-        minimumSize: const Size(60, 30),
-
-        shape: RoundedRectangleBorder(
-          borderRadius:
-          BorderRadius.circular(8),
-        ),
-      ),
-      onPressed: () {},
-
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 12),
       ),
     );
   }

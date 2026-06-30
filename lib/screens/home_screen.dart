@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xFFE3C65A),
+      backgroundColor: const Color(0xFFFFD329),
 
       body: SafeArea(
         child: Column(
@@ -26,21 +26,17 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      //  LOGO
+                      SizedBox(height: height * 0.12),
+
                       Container(
                         width: width * 0.55,
                         height: width * 0.55,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.brown, width: 5),
-                        ),
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/logo.png',
-                            fit: BoxFit.cover,
-                          ),
+                        child: Image.asset(
+                          'assets/logo.png',
+                          fit: BoxFit.contain,
                         ),
                       ),
+
 
                       SizedBox(height: height * 0.08),
 
@@ -60,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: height * 0.02),
                             ),
                             child: Text(
-                              AppText.getText("login"),
+                              AppText.getText("Login"),
                               style: TextStyle(
                                 fontSize: width * 0.045,
                                 color: Colors.black,
@@ -90,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: height * 0.02),
                             ),
                             child: Text(
-                              AppText.getText("createAccount"),
+                              AppText.getText("Create Account"),
                               style: TextStyle(
                                 fontSize: width * 0.045,
                                 color: Colors.black,

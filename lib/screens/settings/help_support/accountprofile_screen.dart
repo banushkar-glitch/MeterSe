@@ -1,537 +1,736 @@
 import 'package:flutter/material.dart';
-import 'helpsupportsettings_screen.dart';
-import 'loginissueacc&pro_screen.dart';
-class AccountProfileHelpScreen extends StatelessWidget {
+
+class AccountProfileHelpScreen extends StatefulWidget {
   const AccountProfileHelpScreen({super.key});
+
+  @override
+  State<AccountProfileHelpScreen> createState() =>
+      _AccountProfileHelpScreenState();
+}
+
+class _AccountProfileHelpScreenState
+    extends State<AccountProfileHelpScreen> {
+
+  final TextEditingController searchController =
+  TextEditingController();
+
+  final List<Map<String, String>> issues = [
+
+    {
+      "title": "Login Issues",
+      "subtitle": "Unable to login to your account?"
+    },
+
+    {
+      "title": "Mobile Number update",
+      "subtitle":
+      "Need to change your registered mobile number?"
+    },
+
+    {
+      "title": "Email Address update",
+      "subtitle":
+      "Need to change your registered email address?"
+    },
+
+    {
+      "title": "Profile Information",
+      "subtitle":
+      "Update your name, profile picture or other details."
+    },
+
+    {
+      "title": "Account Deactivation",
+      "subtitle":
+      "Temporarily or permanently deactivate your account."
+    },
+
+  ];
 
   @override
   Widget build(BuildContext context) {
 
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
-      backgroundColor: const Color(0xFFE4C766),
 
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+        resizeToAvoidBottomInset: false,
 
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.035,
-              vertical: size.height * 0.01,
+        body: SafeArea(
+
+          child: Column(
+
+            children: [
+
+            //////////////////////////////////////////////////////
+            /// HEADER
+            //////////////////////////////////////////////////////
+
+            Container(
+
+            width: double.infinity,
+            height: 99,
+            color: const Color(0xFFFFD329),
+
+            child: Row(
+
+              children: [
+
+                const SizedBox(width: 10),
+
+                IconButton(
+
+                  onPressed: () {
+
+                    /// BACK
+
+                    Navigator.pop(context);
+
+                  },
+
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    size: 38,
+                    color: Colors.black,
+                  ),
+
+                ),
+
+                const Expanded(
+
+                  child: Text(
+
+                    "Account & Profile",
+
+                    textAlign: TextAlign.center,
+
+                    style: TextStyle(
+
+                      fontSize: 20,
+
+                      fontWeight: FontWeight.w400,
+
+                    ),
+
+                  ),
+
+                ),
+
+                IconButton(
+
+                  onPressed: () {
+
+                    /// NOTIFICATION API
+
+                  },
+
+                  icon: const Icon(
+                    Icons.notifications_none,
+                    size: 38,
+                  ),
+
+                ),
+
+                const SizedBox(width: 10),
+
+              ],
+
+            ),
+
+          ),
+
+          //////////////////////////////////////////////////////
+          /// FIXED TOP CONTENT
+          //////////////////////////////////////////////////////
+
+          Container(
+
+            color: const Color(0xFFEAEAEA),
+
+            padding: const EdgeInsets.fromLTRB(
+              18,
+              20,
+              18,
+              15,
             ),
 
             child: Column(
+
               children: [
 
-                /// 🔹 HEADER
-                Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                const Text(
 
-                  children: [
-
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                HelpSupportScreen(),
-                          ),
-                        );
-                      },
-
-                      icon: Icon(
-                        Icons.arrow_back,
-                        size: size.width * 0.07,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    Text(
-                      "Account & Profile",
-
-                      style: TextStyle(
-                        fontSize: size.width * 0.04,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    Icon(
-                      Icons.notifications_none,
-                      size: size.width * 0.065,
-                      color: Colors.black,
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: size.height * 0.01),
-
-                /// 🔹 PROFILE ICON
-                Container(
-                  width: size.width * 0.16,
-                  height: size.width * 0.16,
-
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-
-                  child: Icon(
-                    Icons.account_circle,
-                    size: size.width * 0.09,
-                    color: Colors.blue,
-                  ),
-                ),
-
-                SizedBox(height: size.height * 0.012),
-
-                /// 🔹 TITLE
-
-                Text(
                   "Account & Profile Help",
 
-                  textAlign: TextAlign.center,
-
                   style: TextStyle(
-                    fontSize: size.width * 0.04,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
+
+                    fontSize: 20,
+
+                    fontWeight: FontWeight.w500,
+
                   ),
+
                 ),
 
-                SizedBox(height: size.height * 0.003),
+                const SizedBox(height: 8),
 
-                Text(
-                  "Find solutions for issues related to your account and profile.",
+                const SizedBox(
 
-                  textAlign: TextAlign.center,
+                  width: 300,
 
-                  style: TextStyle(
-                    fontSize: size.width * 0.022,
-                    color: Colors.black87,
+                  child: Text(
+
+                    "Find solutions for issues related to your account and profile.",
+
+                    textAlign: TextAlign.center,
+
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+
                   ),
+
                 ),
 
-                SizedBox(height: size.height * 0.018),
+                const SizedBox(height: 15),
 
-                /// 🔹 SEARCH BAR
-                Container(
-                  width: double.infinity,
+                //////////////////////////////////////////////////////
+                /// SEARCH BAR
+                //////////////////////////////////////////////////////
 
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.03,
-                  ),
+                SizedBox(
 
-                  decoration: BoxDecoration(
-                    color: Colors.white,
+                  height: 40,
 
-                    borderRadius:
-                    BorderRadius.circular(10),
-                  ),
+                  child: TextField(
 
-                  child: Row(
-                    children: [
+                    controller: searchController,
 
-                      Icon(
-                        Icons.search,
-                        size: size.width * 0.055,
-                        color: Colors.black54,
+                    onChanged: (value) {
+
+                      /// SEARCH API
+
+                    },
+
+                    decoration: InputDecoration(
+
+                      hintText:
+                      "Search account and profile issues.....",
+
+                      hintStyle: const TextStyle(
+                        fontSize: 11,
                       ),
 
-                      SizedBox(width: size.width * 0.02),
+                      prefixIcon: const Padding(
 
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText:
-                            "Search account and profile issues...",
+                        padding: EdgeInsets.only(left: 8),
 
-                            hintStyle: TextStyle(
-                              fontSize:
-                              size.width * 0.022,
-                            ),
-
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: size.height * 0.016),
-
-                /// 🔹 MAIN WHITE CARD
-                Container(
-                  width: double.infinity,
-
-                  constraints: BoxConstraints(
-                    minHeight: size.height * 0.48,
-                  ),
-
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.03,
-                    vertical: size.height * 0.016,
-                  ),
-
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF2F2F2),
-
-                    borderRadius:
-                    BorderRadius.circular(18),
-                  ),
-
-                  child: Column(
-                    crossAxisAlignment:
-                    CrossAxisAlignment.start,
-
-                    children: [
-
-                      /// 🔹 SECTION TITLE
-                      Text(
-                        "Common Account Issues",
-
-                        style: TextStyle(
-                          fontSize: size.width * 0.027,
-                          fontWeight: FontWeight.w700,
+                        child: Icon(
+                          Icons.search,
+                          size: 28,
                           color: Colors.black,
                         ),
+
                       ),
 
-                      SizedBox(height: size.height * 0.012),
+                      prefixIconConstraints:
+                      const BoxConstraints(
+                        minWidth: 48,
+                      ),
 
-                      /// 🔹 ISSUE TILES
-                  GestureDetector(
-                    onTap: () {
+                      contentPadding:
+                      const EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 8,
+                      ),
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                           LoginIssuesScreen(),
+                      filled: true,
+
+                      fillColor: Colors.white,
+
+                      border: OutlineInputBorder(
+
+                        borderRadius:
+                        BorderRadius.circular(10),
+
+                      ),
+
+                      enabledBorder:
+                      OutlineInputBorder(
+
+                        borderRadius:
+                        BorderRadius.circular(10),
+
+                        borderSide: BorderSide(
+                          color: Colors.black26,
                         ),
-                      );
-                    },
-                     child: issueTile(
-                        size,
-                        title: "Login Issues",
-                        subtitle:
-                        "Unable to login to your account?",
+
                       ),
+
+                    ),
+
                   ),
-                      divider(),
 
-                      issueTile(
-                        size,
-                        title: "Mobile Number update",
-                        subtitle:
-                        "Need to change your registered mobile number?",
-                      ),
+                ),
 
-                      divider(),
+              ],
 
-                      issueTile(
-                        size,
-                        title: "Email Address update",
-                        subtitle:
-                        "Need to change your registered email address?",
-                      ),
+            ),
 
-                      divider(),
+          ),
 
-                      issueTile(
-                        size,
-                        title: "Profile Information",
-                        subtitle:
-                        "Update your name, profile picture or other details.",
-                      ),
+          //////////////////////////////////////////////////////
+          /// ONLY THIS SECTION SCROLLS
+          //////////////////////////////////////////////////////
 
-                      divider(),
+          Expanded(
 
-                      issueTile(
-                        size,
-                        title: "Account Deactivation",
-                        subtitle:
-                        "Temporarily or permanently deactivate your account.",
-                      ),
+            child: Container(
 
-                      SizedBox(height: size.height * 0.02),
+                color: const Color(0xFFEAEAEA),
 
-                      /// 🔹 SUPPORT BOX
+                child: ListView(
+
+                    padding: const EdgeInsets.fromLTRB(
+                      18,
+                      0,
+                      18,
+                      0,
+                    ),
+
+                    children: [
+
+                    const SizedBox(height: 8),
+
+                const Text(
+
+                  "Common Account Issues",
+
+                  style: TextStyle(
+
+                    fontSize: 13,
+
+                    fontWeight: FontWeight.w700,
+
+                  ),
+
+                ),
+
+                const SizedBox(height: 10),
+
+                //////////////////////////////////////////////////////
+                /// ISSUES LIST
+                //////////////////////////////////////////////////////
+
+                ...List.generate(
+
+            issues.length,
+
+            (index) {
+
+          return InkWell(
+
+          onTap: () {
+
+          //////////////////////////////////////////
+          /// BACKEND API
+          ///
+          /// Open selected help page
+          ///
+          /// Pass:
+          /// issues[index]["title"]
+          //////////////////////////////////////////
+
+          },
+
+          child: Container(
+
+          padding: const EdgeInsets.symmetric(
+          vertical: 14,
+          ),
+
+          decoration: BoxDecoration(
+
+          border: Border(
+
+          bottom: BorderSide(
+          color: Colors.grey.shade300,
+          ),
+
+          ),
+
+          ),
+
+          child: Row(
+
+          children: [
+
+          Expanded(
+
+          child: Column(
+
+          crossAxisAlignment:
+          CrossAxisAlignment.start,
+
+          children: [
+
+          Text(
+
+          issues[index]["title"]!,
+
+          style: const TextStyle(
+
+          fontSize: 12,
+
+          fontWeight:
+          FontWeight.w700,
+
+          ),
+
+          ),
+
+          const SizedBox(height: 5),
+
+          Text(
+
+          issues[index]["subtitle"]!,
+
+          style: const TextStyle(
+
+          fontSize: 12,
+
+          color: Colors.black54,
+
+          ),
+
+          ),
+
+          ],
+
+          ),
+
+          ),
+
+          IconButton(
+
+          onPressed: () {
+
+          ////////////////////////////////////
+          /// BACKEND API
+          ///
+          /// Same action as tile click
+          ////////////////////////////////////
+
+          },
+
+          icon: const Icon(
+
+          Icons.chevron_right,
+
+          color: Colors.black,
+
+          size: 24,
+
+          ),
+
+          ),
+
+          ],
+
+          ),
+
+          ),
+
+          );
+
+          },
+
+          ),
+
+          const SizedBox(height: 18),
+
+                      //////////////////////////////////////////////////////
+                      /// STILL NEED HELP
+                      //////////////////////////////////////////////////////
+
                       Container(
-                        width: double.infinity,
 
-                        padding: EdgeInsets.symmetric(
-                          horizontal:
-                          size.width * 0.025,
-
-                          vertical:
-                          size.height * 0.01,
-                        ),
+                        height: 86,
 
                         decoration: BoxDecoration(
+
                           color: Colors.white,
 
-                          borderRadius:
-                          BorderRadius.circular(12),
-
                           border: Border.all(
-                            color: Colors.grey.shade400,
+                            color: Colors.black26,
                           ),
+
+                          borderRadius:
+                          BorderRadius.circular(5),
+
                         ),
 
                         child: Column(
+
                           children: [
 
-                            Row(
-                              children: [
+                            Expanded(
 
-                                Icon(
-                                  Icons.support_agent,
-                                  size: size.width * 0.055,
-                                  color: Colors.black,
+                              child: Padding(
+
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
                                 ),
 
-                                SizedBox(
-                                  width:
-                                  size.width * 0.02,
-                                ),
+                                child: Row(
 
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment
-                                        .start,
+                                  children: [
 
-                                    children: [
+                                    Image.asset(
 
-                                      Text(
-                                        "Still need help?",
+                                      "assets/help.png",
 
-                                        style: TextStyle(
-                                          fontSize:
-                                          size.width *
-                                              0.023,
+                                      width: 32,
+                                      height: 32,
 
-                                          fontWeight:
-                                          FontWeight
-                                              .w700,
-                                        ),
+                                      fit: BoxFit.contain,
+
+                                    ),
+
+                                    const SizedBox(width: 12),
+
+                                    const Expanded(
+
+                                      child: Column(
+
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+
+                                        children: [
+
+                                          Text(
+
+                                            "Still need help?",
+
+                                            style: TextStyle(
+
+                                              fontSize: 12,
+
+                                              fontWeight:
+                                              FontWeight.w700,
+
+                                            ),
+
+                                          ),
+
+                                        ],
+
                                       ),
 
-                                      Text(
-                                        "Our support team is available\n24/7 to assist you",
+                                    ),
 
-                                        style: TextStyle(
-                                          fontSize:
-                                          size.width *
-                                              0.017,
+                                    SizedBox(
 
-                                          color:
-                                          Colors.black87,
+                                      width: 112,
+
+                                      height: 28,
+
+                                      child: ElevatedButton(
+
+                                        onPressed: () {
+
+                                          ////////////////////////////////////
+                                          /// BACKEND API
+                                          ///
+                                          /// Open Chat Support
+                                          ////////////////////////////////////
+
+                                        },
+
+                                        style: ElevatedButton.styleFrom(
+
+                                          backgroundColor:
+                                          const Color(0xFF4C4545),
+
+                                          shape:
+                                          RoundedRectangleBorder(
+
+                                            borderRadius:
+                                            BorderRadius.circular(5),
+
+                                          ),
+
                                         ),
+
+                                        child: const Text(
+
+                                          "Chat with Us",
+
+                                          style: TextStyle(
+
+                                            fontSize: 9,
+
+                                            color: Colors.white,
+
+                                          ),
+
+                                        ),
+
                                       ),
-                                    ],
-                                  ),
+
+                                    ),
+
+                                  ],
+
                                 ),
 
-                                ElevatedButton(
-                                  onPressed: () {},
+                              ),
 
-                                  style:
-                                  ElevatedButton
-                                      .styleFrom(
-                                    backgroundColor:
-                                    const Color(
-                                        0xFF4A423F),
-
-                                    padding:
-                                    EdgeInsets.symmetric(
-                                      horizontal:
-                                      size.width *
-                                          0.03,
-
-                                      vertical:
-                                      size.height *
-                                          0.008,
-                                    ),
-
-                                    shape:
-                                    RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius
-                                          .circular(
-                                          8),
-                                    ),
-                                  ),
-
-                                  child: Text(
-                                    "Chat with Us",
-
-                                    style: TextStyle(
-                                      fontSize:
-                                      size.width *
-                                          0.018,
-
-                                      color:
-                                      Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
+
+                            const SizedBox(height: 0),
 
                             Divider(
-                              color: Colors.grey.shade400,
+                              height: 1,
+                              color: Colors.grey.shade300,
                             ),
 
-                            Row(
-                              children: [
+                            const SizedBox(height: 0),
 
-                                Icon(
-                                  Icons.email_outlined,
-                                  size: size.width * 0.05,
-                                  color: Colors.black,
+                            InkWell(
+
+                              onTap: () {
+
+                                ////////////////////////////////////
+                                /// BACKEND API
+                                ///
+                                /// Launch Email
+                                ////////////////////////////////////
+
+                              },
+
+                              child: Padding(
+
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
                                 ),
 
-                                SizedBox(
-                                  width:
-                                  size.width * 0.02,
-                                ),
+                                child: Row(
 
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment
-                                        .start,
+                                  children: [
 
-                                    children: [
+                                    Image.asset(
 
-                                      Text(
-                                        "Email us",
+                                      "assets/message.png",
 
-                                        style: TextStyle(
-                                          fontSize:
-                                          size.width *
-                                              0.022,
 
-                                          fontWeight:
-                                          FontWeight
-                                              .w600,
+                                      width: 32,
+                                      height: 32,
+
+                                    ),
+
+                                    const SizedBox(width: 12),
+
+                                    const Column(
+
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+
+                                      children: [
+
+                                        Text(
+
+                                          "Email us",
+
+                                          style: TextStyle(
+
+                                            fontSize: 10,
+
+                                            fontWeight:
+                                            FontWeight.w500,
+
+                                          ),
+
                                         ),
-                                      ),
 
-                                      Text(
-                                        "Support@metersay.com",
+                                        SizedBox(height: 2),
 
-                                        style: TextStyle(
-                                          fontSize:
-                                          size.width *
-                                              0.017,
+                                        Text(
 
-                                          color:
-                                          Colors.black87,
+                                          "Support@metersay.com",
+
+                                          style: TextStyle(
+
+                                            fontSize: 8,
+
+                                            color: Colors.black54,
+
+                                          ),
+
                                         ),
-                                      ),
-                                    ],
-                                  ),
+
+                                      ],
+
+                                    ),
+
+                                    const Spacer(),
+
+                                    const Icon(
+
+                                      Icons.chevron_right,
+
+                                      size: 20,
+
+                                    ),
+
+                                  ],
+
                                 ),
 
-                                Icon(
-                                  Icons.chevron_right,
-                                  size: size.width * 0.05,
-                                  color: Colors.black,
-                                ),
-                              ],
+                              ),
+
                             ),
+
                           ],
+
                         ),
+
                       ),
+
+                      const SizedBox(height: 20),
+
                     ],
-                  ),
+
                 ),
 
-                SizedBox(height: size.height * 0.015),
-              ],
             ),
+
           ),
+
+              //////////////////////////////////////////////////////
+              /// FIXED FOOTER
+              //////////////////////////////////////////////////////
+
+              Container(
+
+                width: double.infinity,
+
+                height: 99,
+
+                color: const Color(0xFF3C3A3A),
+
+              ),
+
+            ],
+
+          ),
+
         ),
-      ),
+
     );
+
   }
 
-  /// 🔹 ISSUE TILE
-  Widget issueTile(
-      Size size, {
-        required String title,
-        required String subtitle,
-      }) {
-
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: size.height * 0.006,
-      ),
-
-      child: Row(
-        crossAxisAlignment:
-        CrossAxisAlignment.start,
-
-        children: [
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment:
-              CrossAxisAlignment.start,
-
-              children: [
-
-                Text(
-                  title,
-
-                  style: TextStyle(
-                    fontSize: size.width * 0.023,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                  ),
-                ),
-
-                SizedBox(height: 2),
-
-                Text(
-                  subtitle,
-
-                  style: TextStyle(
-                    fontSize: size.width * 0.017,
-                    color: Colors.black87,
-                    height: 1.3,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(width: size.width * 0.015),
-
-          Icon(
-            Icons.chevron_right,
-            size: size.width * 0.045,
-            color: Colors.black,
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// 🔹 DIVIDER
-  Widget divider() {
-
-    return Divider(
-      color: Colors.grey.shade400,
-      thickness: 1,
-    );
-  }
 }

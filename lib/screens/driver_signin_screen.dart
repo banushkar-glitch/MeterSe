@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../widget/meter_loader.dart';
+import '../utils/app_text.dart';
 
 class DriverSigninScreen extends StatefulWidget {
   @override
@@ -17,9 +19,16 @@ class _DriverSigninScreenState extends State<DriverSigninScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  bool isLoading = false;
+  bool _isPasswordVisible = false;
+
   // 🔥 API FUNCTION
   Future<bool> registerDriver() async {
-    final url = Uri.parse("http://192.168.0.34:5000/api/driver/register");
+    final url = Uri.parse("http://10.95.155.50:5000/api/driver/register");
+
+    setState(() {
+      isLoading = true;
+    });
 
     try {
       final response = await http.post(
@@ -37,7 +46,7 @@ class _DriverSigninScreenState extends State<DriverSigninScreen> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final loginResponse = await http.post(
-          Uri.parse("http://192.168.0.34:5000/api/driver/login"),
+          Uri.parse("http://10.95.155.50:5000/api/driver/login"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode({
             "phone": int.tryParse(phoneController.text.trim()),
@@ -61,16 +70,90 @@ class _DriverSigninScreenState extends State<DriverSigninScreen> {
 
           print("TOKEN SAVED: ${loginData['token']}");
         }
+        setState(() {
+          isLoading = false;
+        });
         return true;
 
       } else {
+        setState(() {
+          isLoading = false;
+        });
         return false;
       }
     } catch (e) {
+
+      setState(() {
+        isLoading = false;
+      });
+
       print("ERROR: $e");
       return false;
     }
   }
+
+  Widget buildRule(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          const SizedBox(width: 10),
+          Text(
+            text,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  InputDecoration customDecoration({
+    required String hint,
+    required IconData icon,
+    Widget? suffix,
+  }) {
+    return InputDecoration(
+      hintText: hint,
+
+      hintStyle: const TextStyle(
+        color: Colors.black54,
+        fontSize: 15,
+      ),
+
+      prefixIcon: Icon(
+        icon,
+        color: Colors.black45,
+      ),
+
+      suffixIcon: suffix,
+
+      filled: true,
+      fillColor: Colors.white,
+
+      contentPadding: const EdgeInsets.symmetric(
+        vertical: 18,
+      ),
+
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: Colors.black.withOpacity(.15),
+        ),
+      ),
+
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(
+          color: Colors.black26,
+        ),
+      ),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,83 +162,144 @@ class _DriverSigninScreenState extends State<DriverSigninScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xFFE3C65A),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0xFFEAEAEA),
 
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: width * 0.04,
-              vertical: height * 0.01,
+      bottomNavigationBar: Container(
+        height: 100,
+        color: const Color(0xFF3C3A3A),
+        child: Center(
+          child: SizedBox(
+            width: 290,
+            height: 55,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFD9D9D9),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
+              ),
+              onPressed: () async {
+                bool success = await registerDriver();
+
+                if (success) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OTPScreen(
+                        verificationId: "",
+                        phone: phoneController.text.trim(),
+                      ),
+                    ),
+                  );
+                }
+              },
+              child: Text(AppText.getText("Submit"),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
+          ),
+        ),
+      ),
+
+
+      body: Stack(
+        children: [
+
+          SafeArea(
+          child: Padding(
+            padding: EdgeInsets.zero,
             child: Column(
               children: [
 
                 /// TOP BAR
-                Row(
-                  children: [
+                Container(
+                  height: 100,
+                  width: double.infinity,
+                  margin: EdgeInsets.zero,
+                  color: const Color(0xFFFFD329),
+                  child: SafeArea(
+                    child: Row(
+                      children: [
 
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                    ),
-
-                    Expanded(
-                      child: Text(
-                        "Registration",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: width * 0.05,
-                          fontWeight: FontWeight.w600,
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            size: 30,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                    ),
 
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.notifications_none,
-                      ),
+                        Expanded(
+                          child: Text(
+                            AppText.getText("Registration"),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.notifications_none,
+                            size: 28,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
 
-                SizedBox(height: height * 0.05),
 
                 Expanded(
-                  child: SingleChildScrollView(
                     child: Container(
                       width: double.infinity,
+                      margin: EdgeInsets.zero,
 
-                      padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.05,
-                        vertical: height * 0.03,
+                      padding: const EdgeInsets.only(
+                        left: 36,
+                        right: 36,
+                        top: 20,
                       ),
 
                       decoration: BoxDecoration(
                         color: const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(0),
                       ),
 
                       child: Column(
                         children: [
 
-                          Icon(
-                            Icons.assignment_outlined,
-                            size: width * 0.16,
-                            color: Colors.black54,
+                          Container(
+                            height: 75,
+                            width: 75,
+                            child: const Icon(
+                              Icons.assignment_ind_outlined,
+                              size: 58,
+                              color: Colors.black54,
+                            ),
                           ),
 
-                          SizedBox(
-                            height: height * 0.03,
-                          ),
+                          const SizedBox(height: 5),
 
                           /// NAME
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Name",
+                            child: Text(AppText.getText
+                              ("Name"),
                               style: TextStyle(
                                 fontSize: width * 0.032,
                               ),
@@ -166,16 +310,9 @@ class _DriverSigninScreenState extends State<DriverSigninScreen> {
 
                           TextField(
                             controller: nameController,
-                            decoration: InputDecoration(
-                              hintText: "Enter Name",
-                              filled: true,
-                              fillColor: Colors.white,
-                              prefixIcon:
-                              const Icon(Icons.person_outline),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.circular(10),
-                              ),
+                            decoration: customDecoration(
+                              hint: AppText.getText("Enter Name"),
+                              icon: Icons.person_outline,
                             ),
                           ),
 
@@ -184,8 +321,8 @@ class _DriverSigninScreenState extends State<DriverSigninScreen> {
                           /// PHONE
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Phone Number",
+                            child: Text(AppText.getText
+                              ("Phone Number"),
                               style: TextStyle(
                                 fontSize: width * 0.032,
                               ),
@@ -196,19 +333,10 @@ class _DriverSigninScreenState extends State<DriverSigninScreen> {
 
                           TextField(
                             controller: phoneController,
-                            keyboardType:
-                            TextInputType.phone,
-                            decoration: InputDecoration(
-                              hintText:
-                              "Enter Phone Number",
-                              filled: true,
-                              fillColor: Colors.white,
-                              prefixIcon:
-                              const Icon(Icons.phone),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.circular(10),
-                              ),
+                            keyboardType: TextInputType.number,
+                            decoration: customDecoration(
+                              hint: AppText.getText("Enter Phone Number"),
+                              icon: Icons.phone_outlined,
                             ),
                           ),
 
@@ -217,8 +345,8 @@ class _DriverSigninScreenState extends State<DriverSigninScreen> {
                           /// PASSWORD
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Set Password",
+                            child: Text(AppText.getText
+                              ("Set Password"),
                               style: TextStyle(
                                 fontSize: width * 0.032,
                               ),
@@ -229,175 +357,92 @@ class _DriverSigninScreenState extends State<DriverSigninScreen> {
 
                           TextField(
                             controller: passwordController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: "Enter password",
-                              filled: true,
-                              fillColor: Colors.white,
-                              prefixIcon:
-                              const Icon(Icons.lock),
-                              suffixIcon: const Icon(
-                                Icons.visibility_off_outlined,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.circular(10),
+                            obscureText: !_isPasswordVisible,
+                            decoration: customDecoration(
+                              hint: AppText.getText("Enter Password"),
+                              icon: Icons.lock_outline,
+                              suffix: IconButton(
+                                icon: Icon(
+                                  _isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.black45,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
                               ),
                             ),
                           ),
-
                           SizedBox(height: height * 0.025),
 
                           /// PASSWORD RULES
                           Container(
                             width: double.infinity,
-                            padding: EdgeInsets.all(
-                              width * 0.03,
+                            padding: const EdgeInsets.only(
+                              left: 12,
+                              right: 12,
+                              top: 12,
+                              bottom: 12,
                             ),
                             decoration: BoxDecoration(
-                              color:
-                              const Color(0xFFF2F0D8),
-                              borderRadius:
-                              BorderRadius.circular(
-                                  10),
+                              color: const Color(0xFFFFFCE8),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.black12,
+                              ),
                             ),
                             child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: const [
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
 
-                                Text(
+                                const Text(
                                   "Password must contain:",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
 
-                                SizedBox(height: 6),
+                                const SizedBox(height: 10),
 
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check_circle_outline,
-                                      size: 16,
-                                    ),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      "At least 8 characters",
-                                    ),
-                                  ],
-                                ),
-
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check_circle_outline,
-                                      size: 16,
-                                    ),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      "One uppercase letter",
-                                    ),
-                                  ],
-                                ),
-
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check_circle_outline,
-                                      size: 16,
-                                    ),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      "One lowercase letter",
-                                    ),
-                                  ],
-                                ),
-
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check_circle_outline,
-                                      size: 16,
-                                    ),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      "One number or special character",
-                                    ),
-                                  ],
-                                ),
+                                buildRule("At least 8 characters"),
+                                buildRule("One uppercase letter"),
+                                buildRule("One lowercase letter"),
+                                buildRule("One number or special character"),
                               ],
                             ),
                           ),
 
-                          SizedBox(height: height * 0.03),
+                          SizedBox(height: height * 0),
 
                           /// NEXT BUTTON
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style:
-                              ElevatedButton.styleFrom(
-                                backgroundColor:
-                                const Color(
-                                    0xFF4E4543),
-                                padding:
-                                EdgeInsets.symmetric(
-                                  vertical:
-                                  height * 0.018,
-                                ),
-                                shape:
-                                RoundedRectangleBorder(
-                                  borderRadius:
-                                  BorderRadius
-                                      .circular(10),
-                                ),
-                              ),
 
-                              onPressed: () async {
-                                // PASTE YOUR CURRENT onPressed CODE HERE EXACTLY
-                                bool success = await registerDriver();
-
-                                if (success) {
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => OTPScreen(
-                                        verificationId: "",
-                                        phone: phoneController.text.trim(),
-                                      ),
-                                    ),
-                                  );
-
-                                } else {
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Registration Failed"),
-                                    ),
-                                  );
-                                }
-                              },
-
-                              child: Text(
-                                "Next",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize:
-                                  width * 0.04,
-                                  fontWeight:
-                                  FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                  ),
+
                 ),
               ],
             ),
           ),
-        )
+        ),
+        if (isLoading)
+    Container(
+      color: Colors.black.withOpacity(0.4),
+      child: Center(
+        child: Image.asset(
+          "assets/loading_rickshaw.gif",
+          width: 200,
+          height: 200,
+        ),
+      ),
+    ),
+
+    ],
+    ),
     );
   }
 }

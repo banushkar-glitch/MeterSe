@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
-
+import 'rides/map_screen.dart';
+import '../utils/app_text.dart';
+import 'rides/welcome_screen.dart';
 class AccountCreated extends StatefulWidget {
   @override
   State<AccountCreated> createState() => _AccountCreatedState();
@@ -17,7 +19,7 @@ class _AccountCreatedState extends State<AccountCreated> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => LoginScreen(),
+            builder: (context) => const WelcomeScreen(),
         ),
       );
 
@@ -30,9 +32,9 @@ class _AccountCreatedState extends State<AccountCreated> {
     return Scaffold(
       backgroundColor: const Color(0xFFE3C65A),
 
-      body: const Center(
-        child: Text(
-          "Account Created Successfully ✅",
+      body: Center(
+        child: Text(AppText.getText(
+          "Account Created Successfully ✅"),
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,

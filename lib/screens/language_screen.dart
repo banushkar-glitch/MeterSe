@@ -9,22 +9,26 @@ class LanguageScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xFFE3C65A),
+      backgroundColor: const Color(0xFFFFD329),
 
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            SizedBox(height: height * 0.05),
+            SizedBox(height: height * 0.12),
 
-            // 🔥 LOGO (BIG LIKE IMAGE)
-            Image.asset(
-              'assets/logo.png',
-              width: width * 0.6,
+            Container(
+              width: width * 0.55,
+              height: width * 0.55,
+              child: Image.asset(
+                'assets/logo.png',
+                fit: BoxFit.contain,
+              ),
             ),
 
-            SizedBox(height: height * 0.08),
+            SizedBox(height: height * 0.07),
+
 
             // 🔹 LANGUAGE BUTTON FUNCTION
             _langButton(context, "ENGLISH", width, height),

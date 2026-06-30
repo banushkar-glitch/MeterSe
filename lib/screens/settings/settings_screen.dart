@@ -186,7 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                        const TermsScreen(),
+                        const TermsConditionsScreen(),
                       ),
                     );
                   },

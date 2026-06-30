@@ -46,7 +46,7 @@ class DrawerMenu extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      MyTripsScreen(),
+                      RidesCompletedScreen(),
                 ),
               );
             },

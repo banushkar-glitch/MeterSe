@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'aadhaar_verification_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:pin_code_fields/pin_code_fields.dart';
+import '../utils/app_text.dart';
+import 'document_upload_screen.dart';
 class OTPScreen extends StatefulWidget {
   final String verificationId;
   final String phone;
@@ -14,14 +15,16 @@ class OTPScreen extends StatefulWidget {
 
 class _OTPScreenState extends State<OTPScreen> {
 
-  final List<TextEditingController> controllers =
-  List.generate(6, (index) => TextEditingController());
+  TextEditingController otpController =
+  TextEditingController();
+
+
 
   @override
   void dispose() {
-    for (var c in controllers) {
-      c.dispose();
-    }
+
+    otpController.dispose();
+
     super.dispose();
   }
 
@@ -30,88 +33,167 @@ class _OTPScreenState extends State<OTPScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFE3C65A),
+      backgroundColor: const Color(0xFFF5F5F5),
+
+
+
+      bottomNavigationBar: Container(
+        height: 99,
+        width: double.infinity,
+        color: const Color(0xFF3C3A3A),
+
+        child: Center(
+          child: SizedBox(
+            width: 290,
+            height: 51,
+
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFD9D9D9),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+
+              onPressed: () async {
+
+                String otp = otpController.text;
+
+                if (otp.length != 6) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        AppText.getText("Enter valid 6-digit OTP"),
+                      ),
+                    ),
+                  );
+                  return;
+                }
+
+                if (otp == "123456") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DocumentUploadScreen(),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                      content: Text("Invalid OTP"),
+                    ),
+                  );
+                }
+              },
+
+              child:Text(AppText.getText
+                ("Verify"),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
 
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.06,
-          ),
 
           child: SingleChildScrollView(
             child: Column(
               children: [
 
-                SizedBox(height: size.height * 0.02),
+
 
                 /// TOP BAR
-                Row(
-                  children: [
+                Container(
+                  height: 99,
+                  width: double.infinity,
+                  color: const Color(0xFFFFD329),
 
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.arrow_back,
-                        size: size.width * 0.07,
-                        color: Colors.black,
-                      ),
-                    ),
+                  child: Row(
+                    children: [
 
-                    Expanded(
-                      child: Text(
-                        "Welcome Back!!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: size.width * 0.05,
-                          fontWeight: FontWeight.w600,
+                      const SizedBox(width: 10),
+
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          size: 35,
+                          color: Colors.black,
                         ),
                       ),
-                    ),
 
-                    IconButton(
-                      onPressed: () {
-                        // TODO Notification Screen
-                      },
-                      icon: Icon(
-                        Icons.notifications_none,
-                        size: size.width * 0.065,
+                       Expanded(
+                        child: Text(AppText.getText
+                          ("Registration"),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Geologica',
+                            fontSize: 28,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            letterSpacing: 0,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.notifications_none,
+                          size: 28,
+                          color: Colors.black,
+                        ),
+                      ),
+
+                    ],
+                  ),
                 ),
 
-                SizedBox(height: size.height * 0.02),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 36,
+              ),
+              child: Column(
+                children: [
+
+                SizedBox(height: size.height * 0.08),
 
                 /// OTP ICON
                 CircleAvatar(
-                  radius: size.width * 0.08,
+                  radius: size.width * 0.10,
                   backgroundColor: Colors.white,
                   child: Icon(
                     Icons.verified_user_outlined,
-                    size: size.width * 0.09,
+                    size: size.width * 0.10,
                     color: Colors.black,
                   ),
                 ),
 
-                SizedBox(height: size.height * 0.015),
+                SizedBox(height: size.height * 0.020),
 
-                Text(
-                  "Verify Otp",
+                Text(AppText.getText(
+                  "Verify OTP"),
                   style: TextStyle(
                     fontSize: size.width * 0.055,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                SizedBox(height: size.height * 0.01),
+                SizedBox(height: size.height * 0.03),
 
-                Text(
-                  "Enter your 6 digit code sent to your\nregister phone number",
+                Text(AppText.getText(
+                  "Enter your 6 digit code sent to your registered phone number."),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: size.width * 0.03,
+                    fontSize: size.width * 0.04,
                     color: Colors.black87,
                   ),
                 ),
@@ -120,8 +202,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Enter OTP",
+                  child: Text(AppText.getText("Enter OTP"),
                     style: TextStyle(
                       fontSize: size.width * 0.05,
                       fontWeight: FontWeight.w500,
@@ -132,156 +213,86 @@ class _OTPScreenState extends State<OTPScreen> {
                 SizedBox(height: size.height * 0.02),
 
                 /// OTP BOXES
-                Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+                PinCodeTextField(
+                  appContext: context,
+                  length: 6,
+                  controller: otpController,
+                  keyboardType: TextInputType.number,
 
-                  children: List.generate(6, (index) {
-                    return SizedBox(
-                      width: size.width * 0.12,
-                      height: size.width * 0.12,
+                  animationType: AnimationType.fade,
 
-                      child: TextField(
-                        style: TextStyle(
-                          fontSize: size.width * 0.06,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        controller: controllers[index],
-                        keyboardType:
-                        TextInputType.number,
-                        textAlign: TextAlign.center,
-                        maxLength: 1,
+                  textStyle: TextStyle(
+                    fontSize: size.width * 0.06,
+                    fontWeight: FontWeight.bold,
+                  ),
 
-                        decoration: InputDecoration(
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.white,
+                  pinTheme: PinTheme(
+                    shape: PinCodeFieldShape.box,
+                    borderRadius: BorderRadius.circular(10),
 
-                          border: OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.circular(
-                                10),
-                            borderSide:
-                            BorderSide.none,
-                          ),
+                    fieldHeight: 55,
+                    fieldWidth: 48,
 
-                          enabledBorder:
-                          OutlineInputBorder(
-                            borderRadius:
-                            BorderRadius.circular(
-                                10),
-                            borderSide:
-                            BorderSide.none,
-                          ),
-                        ),
+                    activeColor: Colors.white,
+                    selectedColor: Colors.white,
+                    inactiveColor: Colors.white,
 
-                        onChanged: (value) {
-                          if (value.length == 1 &&
-                              index < 5) {
-                            FocusScope.of(context)
-                                .nextFocus();
-                          }
-                        },
-                      ),
-                    );
-                  }),
+                    activeFillColor: Colors.white,
+                    selectedFillColor: Colors.white,
+                    inactiveFillColor: Colors.white,
+                  ),
+
+                  enableActiveFill: true,
+
+                  onChanged: (value) {
+                    if (value.length == 6) {
+                      FocusScope.of(context).unfocus();
+                    }
+                  },
                 ),
 
                 SizedBox(height: size.height * 0.03),
 
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      // TODO Resend OTP
-                    },
-
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.circular(20),
+                  Center(
+                    child: SizedBox(
+                      width: 103,
+                      height: 35,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          // TODO Resend OTP
+                        },
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: const Color(0xFFD9D9D9),
+                          side: const BorderSide(
+                            color: Colors.black,
+                            width: 1,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24.5),
+                          ),
+                        ),
+                        child:Text(AppText.getText("Resend"),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: 'Inria Serif',
+                          ),
+                        ),
                       ),
                     ),
-
-                    child: const Text("Resend"),
                   ),
-                ),
 
                 SizedBox(height: size.height * 0.15),
 
                 /// VERIFY BUTTON
-                SizedBox(
-                  width: double.infinity,
-                  height: size.height * 0.055,
 
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                      const Color(0xFF5B5555),
-
-                      shape:
-                      RoundedRectangleBorder(
-                        borderRadius:
-                        BorderRadius.circular(
-                            10),
-                      ),
-                    ),
-
-                    onPressed: () async {
-
-                      String otp =
-                      controllers
-                          .map((c) => c.text)
-                          .join();
-
-                      if (otp.length != 6) {
-                        ScaffoldMessenger.of(
-                            context)
-                            .showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                "Enter valid 6-digit OTP"),
-                          ),
-                        );
-                        return;
-                      }
-
-                      if (otp == "123456") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                AadhaarVerificationScreen(),
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(
-                            context)
-                            .showSnackBar(
-                          const SnackBar(
-                            content:
-                            Text("Invalid OTP"),
-                          ),
-                        );
-                      }
-                    },
-
-                    child: Text(
-                      "Verify OTP",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize:
-                        size.width * 0.035,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+                  ],
+                ), // inner Column
+            ), // Container
+              ], // outer Column children
+            ), // outer Column
+          ), // SingleChildScrollView
+      ), // SafeArea
     );
   }
 }

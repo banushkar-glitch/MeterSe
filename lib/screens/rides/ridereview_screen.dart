@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'map_screen.dart';
+import 'reviewupdated_screen.dart';
 import '../slidedrawer/slidebar_screen.dart';
 class RateRideScreen extends StatefulWidget {
   const RateRideScreen({super.key});
@@ -9,9 +10,11 @@ class RateRideScreen extends StatefulWidget {
 }
 
 class _RateRideScreenState extends State<RateRideScreen> {
+
   final TextEditingController reviewController = TextEditingController();
 
-  int selectedRating = 4;
+
+  int selectedRating = 0;
 
   @override
   void dispose() {
@@ -43,262 +46,278 @@ class _RateRideScreenState extends State<RateRideScreen> {
     final height = media.size.height;
 
     return Scaffold(
-      drawer: const DrawerMenu(),
-      backgroundColor: const Color(0xFFE6CF63),
-      resizeToAvoidBottomInset: true,
-
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: width * 0.04,
-            vertical: height * 0.015,
-          ),
+      resizeToAvoidBottomInset: false,
+        body: SafeArea(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
               /// HEADER
-              Row(
-                children: [
-                  Builder(
-                    builder: (context) => IconButton(
+              Container(
+                width: double.infinity,
+                height: 99,
+                color: const Color(0xFFFFD329),
+
+                child: Row(
+                  children: [
+
+                    const SizedBox(width: 10),
+
+                    IconButton(
                       onPressed: () {
-                        Scaffold.of(context).openDrawer();
+
+                        /// MENU API
+
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.menu,
-                        size: width * 0.07,
+                        size: 38,
                         color: Colors.black,
                       ),
                     ),
-                  ),
 
-                  Expanded(
-                    child: Text(
-                      "Rate Your Ride",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: width * 0.06,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-
-                  IconButton(
-                    onPressed: () {
-                      // TODO Notification API
-                    },
-                    icon: Icon(
-                      Icons.notifications_none,
-                      size: width * 0.07,
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: height * 0.02),
-
-              /// SUCCESS ICON
-              Center(
-                child: Container(
-                  height: width * 0.24,
-                  width: width * 0.24,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                  child: Center(
-                    child: Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                      size: width * 0.14,
-                    ),
-                  ),
-                ),
-              ),
-
-              SizedBox(height: height * 0.015),
-
-              Center(
-                child: Text(
-                  "Ride Completed!",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: width * 0.05,
-                  ),
-                ),
-              ),
-
-              SizedBox(height: height * 0.005),
-
-              Center(
-                child: Text(
-                  "How was your experience??",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: width * 0.032,
-                  ),
-                ),
-              ),
-
-              SizedBox(height: height * 0.03),
-
-              /// MAP
-              Container(
-                width: double.infinity,
-                constraints: BoxConstraints(
-                  minHeight: height * 0.28,
-                  maxHeight: height * 0.38,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(28),
-                  color: Colors.white,
-                  image: const DecorationImage(
-                    image: AssetImage(
-                      "assets/map.png",
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-
-              SizedBox(height: height * 0.03),
-
-              Text(
-                "Rate your Experience",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: width * 0.045,
-                ),
-              ),
-
-              SizedBox(height: height * 0.01),
-
-              /// RATING CARD
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                  vertical: height * 0.018,
-                  horizontal: width * 0.03,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Column(
-                  children: [
-
-                    Text(
-                      "Your feedback helps us to improve",
-                      style: TextStyle(
-                        fontSize: width * 0.038,
+                    const Expanded(
+                      child: Text(
+                        "RIDE COMPLETED",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
 
-                    SizedBox(height: height * 0.01),
+                    IconButton(
+                      onPressed: () {
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        5,
-                            (index) => buildStar(index + 1),
+                        /// NOTIFICATION API
+
+                      },
+                      icon: const Icon(
+                        Icons.notifications_none,
+                        size: 38,
+                        color: Colors.black,
                       ),
                     ),
+
+                    const SizedBox(width: 10),
                   ],
                 ),
               ),
 
-              SizedBox(height: height * 0.025),
+              /// BODY
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  color: const Color(0xFFEAEAEA),
 
-              Text(
-                "Write a review (optional)",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: width * 0.045,
-                ),
-              ),
+                  child: Column(
+                    children: [
 
-              SizedBox(height: height * 0.01),
+                      const SizedBox(height: 8),
 
-              /// REVIEW BOX
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: TextField(
-                  controller: reviewController,
-                  maxLines: 5,
-                  maxLength: 250,
-                  decoration: InputDecoration(
-                    hintText:
-                    "Share details about your ride.........",
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.all(width * 0.04),
-                    counterText: "",
-                  ),
-                ),
-              ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
 
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "${reviewController.text.length}/250",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: width * 0.03,
-                  ),
-                ),
-              ),
+                            /// SKIP API
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MapScreen(),
+                              ),
+                            );
 
-              SizedBox(height: height * 0.02),
-
-              /// SUBMIT BUTTON
-              SizedBox(
-                width: double.infinity,
-                height: height * 0.065,
-                child: ElevatedButton(
-                  onPressed: () {
-
-                    /// TODO API CALL
-                    ///
-                    /// selectedRating
-                    /// reviewController.text
-                    ///
-                    /// Backend Integration Here
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            MapScreen(),
-
+                          },
+                          child: const Text(
+                            "Skip",
+                            style: TextStyle(
+                              fontSize: 16,
+                              decoration: TextDecoration.underline,
+                              color: Color(0xFF3C3A3A),
+                            ),
+                          ),
+                        ),
                       ),
-                    );
 
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFFEA00),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Text(
-                    "Submit Review",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: width * 0.045,
-                      fontWeight: FontWeight.bold,
-                    ),
+                      Image.asset(
+                        "assets/check.png",
+                        width: 100,
+                        height: 100,
+                      ),
+
+                      const SizedBox(height: 5),
+
+                      const Text(
+                        "Ride Completed!",
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 3),
+
+                      const Text(
+                        "How was your experience?",
+                        style: TextStyle(
+                          fontSize: 9,
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      Container(
+                        width: 342,
+                        height: 140,
+
+                        decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.circular(30),
+                          image: const DecorationImage(
+                            image: AssetImage(
+                              "assets/map.png",
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 1),
+
+                      const Text(
+                        "Rate your Experience",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      const Text(
+                        "Your feedback helps us improve",
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.center,
+                        children: List.generate(
+                          5,
+                              (index) {
+                            return IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  selectedRating =
+                                      index + 1;
+                                });
+                              },
+                              icon: Icon(
+                                Icons.star,
+                                size: 38, // increase star size
+                                color:
+                                index < selectedRating
+                                    ? Colors.amber
+                                    : Colors.grey,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+
+                      const Text(
+                        "Write a review (optional)",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      /// REVIEW TEXTBOX
+                      Container(
+                        width: 359,
+                        height: 60,
+
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: Colors.grey,
+                          ),
+                        ),
+
+                        child: TextField(
+                          controller: reviewController,
+
+                          decoration: const InputDecoration(
+                            hintText: "Enter your review",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      /// SUBMIT BUTTON
+                      Container(
+                        width: 359,
+                        height: 40,
+
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFEA08),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+
+                        child: InkWell(
+                          onTap: () {
+
+                            /// API CALL LATER
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReviewUpdateScreen(),
+                              ),
+                            );
+
+                            print(selectedRating);
+                            print(reviewController.text);
+
+                          },
+
+                          child: const Center(
+                            child: Text(
+                              "Submit Review",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
 
-              SizedBox(height: height * 0.03),
+              /// FOOTER
+              Container(
+                width: double.infinity,
+                height: 85,
+                color: const Color(0xFF3C3A3A),
+              ),
             ],
           ),
         ),
-      ),
     );
   }
 }

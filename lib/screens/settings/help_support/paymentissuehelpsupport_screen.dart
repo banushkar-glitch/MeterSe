@@ -33,12 +33,7 @@ class PaymentIssuesScreen extends StatelessWidget {
 
                     IconButton(
                       onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HelpSupportScreen(),
-                            ),
-                          );
+                        Navigator.pop(context);
                       },
 
                       icon: Icon(

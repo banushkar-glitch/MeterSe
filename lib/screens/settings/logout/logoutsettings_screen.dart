@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../settings_screen.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../home_screen.dart';
 class LogoutScreen extends StatelessWidget {
   const LogoutScreen({super.key});
 
@@ -9,56 +12,86 @@ class LogoutScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFE4C766),
+
 
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.05,
-            vertical: size.height * 0.015,
-          ),
+
 
           child: Column(
             children: [
 
               /// 🔹 HEADER
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
+              Container(
 
-                children: [
+                width: double.infinity,
+                height: 99,
+                color: const Color(0xFFFFD329),
 
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SettingsScreen(),
+                child: Row(
+
+                  children: [
+
+                    const SizedBox(width: 10),
+
+                    IconButton(
+
+                      onPressed: () {
+
+                        /// BACK
+
+                        Navigator.pop(context);
+
+                      },
+
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        size: 38,
+                        color: Colors.black,
+                      ),
+
+                    ),
+
+                    const Expanded(
+
+                      child: Text(
+
+                        "Account & Profile",
+
+                        textAlign: TextAlign.center,
+
+                        style: TextStyle(
+
+                          fontSize: 20,
+
+                          fontWeight: FontWeight.w400,
+
                         ),
-                      );
-                    },
 
-                    icon: Icon(
-                      Icons.arrow_back,
-                      size: size.width * 0.09,
-                      color: Colors.black,
+                      ),
+
                     ),
-                  ),
 
-                  Text(
-                    "Log Out",
-                    style: TextStyle(
-                      fontSize: size.width * 0.06,
-                      fontWeight: FontWeight.w700,
+                    IconButton(
+
+                      onPressed: () {
+
+                        /// NOTIFICATION API
+
+                      },
+
+                      icon: const Icon(
+                        Icons.notifications_none,
+                        size: 38,
+                      ),
+
                     ),
-                  ),
 
-                  Icon(
-                    Icons.notifications_none,
-                    size: size.width * 0.08,
-                    color: Colors.black,
-                  ),
-                ],
+                    const SizedBox(width: 10),
+
+                  ],
+
+                ),
+
               ),
 
               SizedBox(height: size.height * 0.04),
@@ -115,13 +148,28 @@ class LogoutScreen extends StatelessWidget {
               SizedBox(height: size.height * 0.08),
 
               /// 🔹 LOGOUT BUTTON
-              SizedBox(
-                width: double.infinity,
+              Center(
+                child: SizedBox(
+                  width: 300, // Change this value as needed
 
                 child: ElevatedButton(
-                  onPressed: () {
+
+                  onPressed: () async{
 
                     /// 🔥 LOGOUT LOGIC HERE
+                    final prefs =
+                        await SharedPreferences.getInstance();
+
+                    await prefs.remove('jwt_token');
+                    await prefs.setBool('isLoggedIn', false);
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>HomeScreen(),
+                      ),
+                          (route) => false,
+                    );
 
                   },
 
@@ -135,7 +183,7 @@ class LogoutScreen extends StatelessWidget {
 
                     shape: RoundedRectangleBorder(
                       borderRadius:
-                      BorderRadius.circular(16),
+                      BorderRadius.circular(10),
                     ),
                   ),
 
@@ -149,12 +197,14 @@ class LogoutScreen extends StatelessWidget {
                   ),
                 ),
               ),
+      ),
 
               SizedBox(height: size.height * 0.03),
 
               /// 🔹 CANCEL BUTTON
-              SizedBox(
-                width: double.infinity,
+        Center(
+          child: SizedBox(
+            width: 170,
 
                 child: ElevatedButton(
                   onPressed: () {
@@ -185,38 +235,24 @@ class LogoutScreen extends StatelessWidget {
                   ),
                 ),
               ),
+        ),
 
               const Spacer(),
 
-              /// 🔹 FOOTER
-              Row(
-                mainAxisAlignment:
-                MainAxisAlignment.center,
 
-                children: [
 
-                  Icon(
-                    Icons.security,
-                    size: size.width * 0.07,
-                    color: Colors.black,
-                  ),
+              Container(
 
-                  SizedBox(width: size.width * 0.02),
+                width: double.infinity,
 
-                  Text(
-                    "Your data is always safe with us.",
-                    style: TextStyle(
-                      fontSize: size.width * 0.038,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ],
+                height: 99,
+
+                color: const Color(0xFF3C3A3A),
+
               ),
-
-              SizedBox(height: size.height * 0.02),
             ],
           ),
-        ),
+
       ),
     );
   }

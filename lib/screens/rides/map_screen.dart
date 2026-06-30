@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import '../slidedrawer/slidebar_screen.dart';
 import 'riderequest_screen.dart';
+import 'lastmilerequest_screen.dart';
+import '../../utils/app_text.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -15,16 +18,37 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? mapController;
 
+  ///drawer menu
+  final GlobalKey<ScaffoldState> _scaffoldKey =
+  GlobalKey<ScaffoldState>();
+
   LatLng currentPosition = const LatLng(18.5204, 73.8567);
 
   StreamSubscription<Position>? positionStream;
 
   bool isOnline = true;
+  bool showRideRequest = false;
+  bool isLastMileRequest = false;
 
   @override
   void initState() {
     super.initState();
     _initLocation();
+
+    // TESTING ONLY
+    Future.delayed(
+      const Duration(seconds: 15),
+          () {
+        setState(() {
+          showRideRequest = true;
+
+          // FRONTEND TESTING
+          isLastMileRequest = false;
+          // false = Normal Ride Request
+          // true  = Last Mile Request
+        });
+      },
+    );
   }
 
   Future<void> _initLocation() async {
@@ -101,146 +125,74 @@ class _MapScreenState extends State<MapScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      drawer: DrawerMenu(),
-      backgroundColor: const Color(0xffE3C65A),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * .03,
-            vertical: size.height * .01,
-          ),
+      key: _scaffoldKey,
+      drawer: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.70,
+        child: DrawerMenu(),
+      ),
+      backgroundColor: const Color(0xFFEAEAEA),
+
+      body: Stack(
+        children: [
+
+          SafeArea(
+
           child: Column(
             children: [
 
               //----------------------------------
               // HEADER
               //----------------------------------
+              Container(
+                height: 99,
+                width: double.infinity,
+                color: const Color(0xFFFFD329),
 
-              GestureDetector(
-                onTap: () {
-                  // OPEN PROFILE
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * .04,
-                    vertical: size.height * .012,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffE9CF63),
-                    borderRadius: BorderRadius.circular(18),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(.15),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      )
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Builder(
-                        builder: (context) => InkWell(
-                          onTap: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          child: const Icon(Icons.menu),
+                child: Row(
+                  children: [
+
+                    const SizedBox(width: 10),
+
+                    IconButton(
+
+                      onPressed: () {
+                        _scaffoldKey.currentState?.openDrawer();
+                      },
+                      icon: Icon(
+                        Icons.menu,
+                        size: size.width * 0.07,
+                        color: Colors.black,
+                      ),
+                    ),
+
+                     Expanded(
+                      child: Text(AppText.getText("Dashboard"),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Geologica',
+                          fontSize: 28,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                          letterSpacing: 0,
                         ),
                       ),
-                      SizedBox(width: size.width * .03),
+                    ),
 
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Hello,Rakesh",
-                              style: TextStyle(
-                                fontWeight:
-                                FontWeight.w700,
-                                fontSize:
-                                size.width * .045,
-                              ),
-                            ),
-
-                            SizedBox(
-                                height:
-                                size.height * .003),
-
-                            Row(
-                              children: [
-                                Text(
-                                  "You are Online",
-                                  style: TextStyle(
-                                    fontSize:
-                                    size.width *
-                                        .026,
-                                    letterSpacing: 2,
-                                  ),
-                                ),
-
-                                SizedBox(
-                                    width:
-                                    size.width *
-                                        .015),
-
-                                Container(
-                                  width: 8,
-                                  height: 8,
-                                  decoration:
-                                  const BoxDecoration(
-                                    color:
-                                    Colors.green,
-                                    shape:
-                                    BoxShape.circle,
-                                  ),
-                                ),
-
-                                SizedBox(
-                                    width:
-                                    size.width *
-                                        .01),
-
-                                Text(
-                                  "Online",
-                                  style: TextStyle(
-                                    color:
-                                    Colors.green,
-                                    fontSize:
-                                    size.width *
-                                        .025,
-                                  ),
-                                )
-                              ],
-                            ),
-
-                            Text(
-                              "OnlineTime 03h 30m 20sec",
-                              style: TextStyle(
-                                fontWeight:
-                                FontWeight.w500,
-                                fontSize:
-                                size.width * .03,
-                              ),
-                            ),
-                          ],
-                        ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.notifications_none,
+                        size: 28,
+                        color: Colors.black,
                       ),
+                    ),
 
-                      InkWell(
-                        onTap: () {
-                          // NOTIFICATION PAGE
-                        },
-                        child: const Icon(
-                          Icons.notifications_none,
-                        ),
-                      )
-                    ],
-                  ),
+                    const SizedBox(width: 10),
+                  ],
                 ),
               ),
 
-              SizedBox(height: size.height * .015),
+              SizedBox(height: size.height * .002),
 
               //----------------------------------
               // BODY
@@ -255,13 +207,13 @@ class _MapScreenState extends State<MapScreen> {
                     //----------------------------------
 
                     Expanded(
-                      flex: 6,
+                      flex: 5,
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius:
                           BorderRadius.circular(
-                              20),
+                              4),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black
@@ -273,7 +225,7 @@ class _MapScreenState extends State<MapScreen> {
                         child: ClipRRect(
                           borderRadius:
                           BorderRadius.circular(
-                              20),
+                              4),
                           child: GoogleMap(
                             initialCameraPosition:
                             CameraPosition(
@@ -307,255 +259,267 @@ class _MapScreenState extends State<MapScreen> {
                     ),
 
                     SizedBox(
-                        height: size.height * .015),
+                        height: size.height * .00),
 
                     //----------------------------------
                     // RIDES CARD
                     //----------------------------------
 
-                    Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          // TODAY RIDES SCREEN
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding:
-                          EdgeInsets.symmetric(
-                            horizontal:
-                            size.width * .04,
+                    Container(
+                      width: double.infinity,
+                      height: 203,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 12,
+                            offset: Offset(0, 4),
                           ),
-                          decoration: BoxDecoration(
-                            color:
-                            const Color(0xff5A5A5A),
-                            borderRadius:
-                            BorderRadius.circular(
-                                18),
-                          ),
-                          child: Row(
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+
+                          /// TOP ROW
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+
                               Expanded(
                                 child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .center,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .start,
-                                  children: [
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children:  [
+
                                     Text(
-                                      "Today's Ride",
-                                      style:
-                                      TextStyle(
-                                        color: Colors
-                                            .white70,
-                                        fontSize:
-                                        size.width *
-                                            .028,
+                                      "Todays Rides",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
-                                    SizedBox(
-                                        height:
-                                        size.height *
-                                            .005),
+
+                                    SizedBox(height: 15),
+
                                     Text(
                                       "5 Rides Completed",
-                                      style:
-                                      TextStyle(
-                                        color: Colors
-                                            .white,
-                                        fontWeight:
-                                        FontWeight
-                                            .bold,
-                                        fontSize:
-                                        size.width *
-                                            .042,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
 
-                              const Icon(
-                                Icons
-                                    .trending_up_rounded,
-                                color: Colors.amber,
-                                size: 42,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: const [
 
-                    SizedBox(
-                        height: size.height * .012),
-
-                    //----------------------------------
-                    // GO ONLINE CARD
-                    //----------------------------------
-
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding:
-                        EdgeInsets.symmetric(
-                          horizontal:
-                          size.width * .04,
-                        ),
-                        decoration: BoxDecoration(
-                          color:
-                          const Color(0xff5A5A5A),
-                          borderRadius:
-                          BorderRadius.circular(
-                              16),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .center,
-                                crossAxisAlignment:
-                                CrossAxisAlignment
-                                    .start,
-                                children: [
                                   Text(
-                                    "Go Online",
-                                    style:
-                                    TextStyle(
-                                      color: Colors
-                                          .white,
-                                      fontWeight:
-                                      FontWeight
-                                          .bold,
-                                      fontSize:
-                                      size.width *
-                                          .038,
+                                    "💎 Diamond",
+                                    style: TextStyle(
+                                      fontSize: 16,
                                     ),
                                   ),
-                                  Text(
-                                    "You are online and visible to riders",
-                                    style:
-                                    TextStyle(
-                                      color: Colors
-                                          .white70,
-                                      fontSize:
-                                      size.width *
-                                          .026,
-                                    ),
+
+                                  SizedBox(height: 8),
+
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.black,
+                                        size: 20,
+                                      ),
+
+                                      SizedBox(width: 4),
+
+                                      Text(
+                                        "4.8",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ),
+                            ],
+                          ),
 
-                            Switch(
-                              value: isOnline,
-                              activeTrackColor:
-                              const Color(
-                                  0xffE3C65A),
-                              activeColor:
-                              Colors.white,
-                              onChanged: (value) {
-                                setState(() {
-                                  isOnline =
-                                      value;
-                                });
+                          const SizedBox(height : 50),
 
-                                // TODO BACKEND
-                                // updateDriverStatus(value);
-                              },
-                            )
-                          ],
-                        ),
+                          /// BOTTOM ROW
+                          Row(
+                            children: [
+
+                              CircleAvatar(
+                                radius: 26,
+                                backgroundColor: Color(0xFFD9D9D9),
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+
+                              const SizedBox(width: 12),
+
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+
+                                    Text(
+                                      "Ramesh Kumar",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 4),
+
+                                    Text(
+                                      "Vehicle: RJ14PC5678",
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 2),
+
+                                    Text(
+                                      "Unique Id: 010101",
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              Switch(
+                                value: true,
+                                activeColor: Colors.white,
+                                activeTrackColor: Color(0xFF5EC25C),
+                                onChanged: (value) {},
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
 
                     SizedBox(
-                        height: size.height * .012),
+                        height: size.height * .00),
 
                     //----------------------------------
                     // RIDE REQUEST
                     //----------------------------------
 
-                    GestureDetector(
-                      onTap: () {
-                        // OPEN RIDE REQUESTS
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NewRideRequestScreen(),
+                    Container(
+                      width: double.infinity,
+                      height: 100,
+                      color: const Color(0xFF3C3A3A),
+
+                      child: Center(
+                        child: Container(
+                          width: 240,
+                          height: 68,
+
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
                           ),
-                        );
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding:
-                        EdgeInsets.symmetric(
-                          horizontal:
-                          size.width * .05,
-                          vertical:
-                          size.height * .018,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.circular(
-                              16),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment
-                                    .start,
-                                children: [
-                                  Text(
-                                    "Ride Request",
-                                    style:
-                                    TextStyle(
-                                      fontWeight:
-                                      FontWeight
-                                          .bold,
-                                      fontSize:
-                                      size.width *
-                                          .040,
+
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+
+                              RichText(
+                                text: const TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "Time left today: ",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                      height: size
-                                          .height *
-                                          .003),
-                                  Text(
-                                    "You are online and visible to riders",
-                                    style:
-                                    TextStyle(
-                                      color: Colors
-                                          .black54,
-                                      fontSize:
-                                      size.width *
-                                          .026,
+                                    TextSpan(
+                                      text: "03 : 30 : 20",
+                                      style: TextStyle(
+                                        color: Color(0xFF6FBF3A),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            const Icon(
-                              Icons.chevron_right,
-                            )
-                          ],
+
+                              const SizedBox(height: 6),
+
+                              RichText(
+                                text: const TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "Days Left: ",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: "2",
+                                      style: TextStyle(
+                                        color: Color(0xFF6FBF3A),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               )
             ],
           ),
-        ),
+
+      ),
+
+          if (showRideRequest)
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 6,
+                  sigmaY: 6,
+                ),
+                child: Container(
+                  color: Colors.black.withOpacity(0.15),
+                ),
+              ),
+            ),
+
+          if (showRideRequest)
+            Center(
+              child: isLastMileRequest
+                  ? const LastMileRequest()
+                  : const NewRideRequestScreen(),
+            ),
+        ],
       ),
     );
   }

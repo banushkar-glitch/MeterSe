@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'ridestart_screen.dart';
+import '../slidedrawer/reject_slider.dart';
+import '../slidedrawer/slidebar_screen.dart';
+import '../slidedrawer/rejectbox.dart';
+
 class RideAcceptedScreen extends StatefulWidget {
   const RideAcceptedScreen({super.key});
 
@@ -15,58 +19,70 @@ class _RideAcceptedScreenState
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFE4CB61),
+      drawer: DrawerMenu(),
+      backgroundColor: const Color(0xFFEAEAEA),
 
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.04,
-          ),
-          child: Column(
-            children: [
+      body: Stack(
+        children: [
 
-              SizedBox(height: size.height * 0.01),
+      SafeArea(
 
-              /// HEADER
-              Row(
-                children: [
-                  Builder(
-                    builder: (context) => IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: Icon(
-                        Icons.menu,
-                        size: size.width * 0.07,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+      child: Column(
+      children: [
 
-                  Expanded(
-                    child: Text(
-                      "Ride Accepted",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: size.width * 0.05,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
+        //----------------------------------
+        // HEADER
+        //----------------------------------
+        Container(
+        height: 99,
+        width: double.infinity,
+        color: const Color(0xFFFFD329),
 
-                  IconButton(
-                    onPressed: () {
-                      // notification
-                    },
-                    icon: Icon(
-                      Icons.notifications_none,
-                      size: size.width * 0.065,
-                    ),
-                  ),
-                ],
+        child: Row(
+          children: [
+
+            const SizedBox(width: 10),
+
+            IconButton(
+              onPressed: () {
+
+              },
+              icon: Icon(
+                Icons.menu,
+                size: size.width * 0.07,
+                color: Colors.black,
               ),
+            ),
 
-              SizedBox(height: size.height * 0.015),
+            const Expanded(
+              child: Text(
+                "Active Ride",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Geologica',
+                  fontSize: 28,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                  letterSpacing: 0,
+                ),
+              ),
+            ),
+
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.notifications_none,
+                size: 28,
+                color: Colors.black,
+              ),
+            ),
+
+            const SizedBox(width: 10),
+          ],
+        ),
+      ),
+
+              SizedBox(height: size.height * 0.0),
 
               Expanded(
                 child: SingleChildScrollView(
@@ -77,18 +93,20 @@ class _RideAcceptedScreenState
 
                       /// MAP CARD
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+
+                        },
                         child: Container(
-                          height: size.height * 0.30,
+                          height: size.height * 0.45,
                           width: double.infinity,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius:
-                            BorderRadius.circular(25),
+                            BorderRadius.circular(0),
                           ),
                           child: ClipRRect(
                             borderRadius:
-                            BorderRadius.circular(25),
+                            BorderRadius.circular(0),
                             child: Image.network(
                               "https://maps.gstatic.com/tactile/basepage/pegman_sherlock.png",
                               fit: BoxFit.cover,
@@ -98,304 +116,289 @@ class _RideAcceptedScreenState
                       ),
 
                       SizedBox(
-                          height: size.height * 0.005),
+                          height: size.height * 0.0),
 
                       /// CUSTOMER CARD
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: size.height * 0.04,
-                  ),
-
+                Center(
                   child: Container(
-                    padding: EdgeInsets.all(size.width * 0.03),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                        child: Row(
-                          children: [
+                    width: 365,
+                    height: 230,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFD9D9D9),
+                          borderRadius: BorderRadius.circular(24),
+                        ),
 
-                            CircleAvatar(
-                              radius:
-                              size.width * 0.05,
-                              child: const Icon(
-                                  Icons.person),
-                            ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
 
-                            SizedBox(
-                                width:
-                                size.width * 0.03),
+                          child: Column(
+                            children: [
 
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment
-                                    .start,
+                              const Text(
+                                "PICK UP DETAILS",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                ),
+                              ),
+
+                              const SizedBox(height: 25),
+
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
 
-                                  Text(
-                                    "Rahul",
-                                    style: TextStyle(
-                                      fontWeight:
-                                      FontWeight
-                                          .bold,
-                                      fontSize:
-                                      size.width *
-                                          0.035,
+                                  CircleAvatar(
+                                    radius: 28,
+                                    backgroundImage:
+                                    AssetImage("assets/images/user.png"),
+                                  ),
+
+                                  const SizedBox(width: 12),
+
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: const [
+
+                                        Text(
+                                          "Neha",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+
+                                        SizedBox(height: 8),
+
+                                        Row(
+                                          children: [
+
+                                            Icon(
+                                              Icons.location_on,
+                                              size: 20,
+                                            ),
+
+                                            SizedBox(width: 4),
+
+                                            Text(
+                                              "Shivaji Nagar",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        SizedBox(height: 6),
+
+                                        Padding(
+                                          padding:
+                                          EdgeInsets.only(left: 24),
+                                          child: Text(
+                                            "0.5 km",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
 
-                                  Text(
-                                    "Customer",
-                                    style: TextStyle(
-                                      fontSize:
-                                      size.width *
-                                          0.028,
-                                    ),
-                                  ),
-
-                                  Row(
+                                  Column(
                                     children: [
 
-                                      const Icon(
-                                        Icons.star,
-                                        color: Colors
-                                            .orange,
-                                        size: 16,
+                                      SizedBox(
+                                        width: 122,
+                                        height: 33,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            // message api
+                                          },
+
+                                          style:
+                                          ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                            Colors.white,
+                                            elevation: 0,
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  9),
+                                            ),
+                                          ),
+
+                                          child: const Text(
+                                            "Message",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
                                       ),
 
-                                      SizedBox(
-                                          width: 4),
-
-                                      const Text(
-                                          "4.5"),
+                                      const SizedBox(height: 8),
 
                                       SizedBox(
-                                          width:
-                                          size.width *
-                                              0.05),
+                                        width: 122,
+                                        height: 33,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            // call api
+                                          },
 
-                                      const Text(
-                                          "8.2 km"),
+                                          style:
+                                          ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                            Colors.white,
+                                            elevation: 0,
+                                            shape:
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  9),
+                                            ),
+                                          ),
+
+                                          child: const Text(
+                                            "Call",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+
                                     ],
                                   ),
                                 ],
                               ),
-                            ),
+                              const SizedBox(height: 25),
 
-                            IconButton(
-                              onPressed: () {
-                                // chat
-                              },
-                              icon: const Icon(
-                                  Icons.chat_bubble_outline),
-                            ),
-                          ],
+                              Center(
+                                child: SizedBox(
+                                  width: 220, // reduce width here
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      // ARRIVED API HERE
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => RideStartedScreen(),
+                                        ),
+                                      );
+
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF7ED321),
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      "Arrived At Location",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                 ),
-                      SizedBox(
-                          height: size.height * 0.015),
-
-                      /// PICKUP DROP CARD
+                      /// bttom contaier BUTTON
                       Container(
-                        padding: EdgeInsets.all(
-                            size.width * 0.03),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          children: [
+                        width: double.infinity,
+                        height: 99,
+                        color: const Color(0xFF3C3A3A),
 
-                            Row(
+                        child: Center(
+                          child: Container(
+                            width: 359,
+                            height: 59,
+
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                            ),
+
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+
+                            child: Row(
                               children: [
 
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment
-                                        .start,
-                                    children: const [
-
-                                      Text("Pick up"),
-
-                                      SizedBox(
-                                          height: 5),
-
-                                      Text(
-                                        "Shivaji Nagar",
-                                        style: TextStyle(
-                                          fontWeight:
-                                          FontWeight
-                                              .bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                const Icon(
+                                  Icons.error_outline,
+                                  size: 26,
+                                  color: Colors.black,
                                 ),
 
+                                const SizedBox(width: 8),
+
                                 Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment
-                                        .start,
-                                    children: const [
+                                  child: Text(
+                                    "Canceling rides more than 2 times in a single day may temporarily block your account for 24 hours. Please accept rides responsibly to maintain smooth service for customers.",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
 
-                                      Text("Drop"),
-
-                                      SizedBox(
-                                          height: 5),
-
-                                      Text(
-                                        "Hinjewadi Phase 1",
-                                        style: TextStyle(
-                                          fontWeight:
-                                          FontWeight
-                                              .bold,
-                                        ),
-                                      ),
-                                    ],
+                                GestureDetector(
+                                  onTap: () {
+                                    // CANCEL RIDE API HERE
+                                  },
+                                  child: const Text(
+                                    "Cancel Ride",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-
-                            SizedBox(
-                                height:
-                                size.height * 0.02),
-
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment
-                                  .spaceBetween,
-                              children: const [
-
-                                Text(
-                                    "Distance Left"),
-
-                                Text("4.2 km"),
-
-                                Text("Time Left"),
-
-                                Text("10 min"),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(
-                          height: size.height * 0.05),
-
-                      /// ARRIVED BUTTON
-                      SizedBox(
-                        width: size.width * 0.8,
-                        height: size.height * 0.065,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // backend later
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RideStartedScreen(),
-                              ),
-                            );
-                          },
-                          style:
-                          ElevatedButton.styleFrom(
-                            backgroundColor:
-                            const Color(
-                                0xFF8CE63B),
-                            shape:
-                            RoundedRectangleBorder(
-                              borderRadius:
-                              BorderRadius
-                                  .circular(35),
-                            ),
-                          ),
-                          child: Text(
-                            "Arrived At Location",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize:
-                              size.width * 0.04,
-                            ),
                           ),
                         ),
                       ),
 
                       SizedBox(
-                          height: size.height * 0.001),
-
-                      /// CANCEL BUTTON
-                      TextButton.icon(
-                        onPressed: () {
-                          // cancel ride
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                        label: const Text(
-                          "Cancel Ride",
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
+                        height: size.height * 0.005,
                       ),
-
-                      SizedBox(
-                          height: size.height * 0.02),
-
-                      /// WARNING CARD
-                      Container(
-                        padding: EdgeInsets.all(
-                            size.width * 0.03),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.circular(15),
-                        ),
-                        child: Row(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: [
-
-                            const Icon(
-                              Icons.info_outline,
-                              color: Colors.black54,
-                            ),
-
-                            SizedBox(
-                                width:
-                                size.width * 0.03),
-
-                            Expanded(
-                              child: Text(
-                                "Canceling rides more than 2 times in a single day may temporarily block your account for 24 hours. Please accept rides responsibly.",
-                                style: TextStyle(
-                                  fontSize:
-                                  size.width *
-                                      0.025,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(
-                          height: size.height * 0.005),
                     ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+      ],
+    ),
+    ),
+
+    ],
+    ),
     );
   }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'ridereview_screen.dart';
+import 'dropride_screen.dart';
+import '../slidedrawer/reject_slider.dart';
+import '../slidedrawer/slidebar_screen.dart';
+import '../slidedrawer/rejectbox.dart';
 class RideStartedScreen extends StatefulWidget {
   const RideStartedScreen({super.key});
 
@@ -20,175 +23,420 @@ class _RideStartedScreenState extends State<RideStartedScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFE4CB61),
+      drawer: DrawerMenu(),
+      backgroundColor: const Color(0xFFEAEAEA),
 
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.04,
-          ),
+      body: Stack(
+        children: [
 
-          child: Column(
-            children: [
+          SafeArea(
 
-              SizedBox(height: size.height * 0.01),
+            child: Column(
+              children: [
 
-              /// HEADER
-              Row(
-                children: [
+                //----------------------------------
+                // HEADER
+                //----------------------------------
+                Container(
+                  height: 99,
+                  width: double.infinity,
+                  color: const Color(0xFFFFD329),
 
-                  Builder(
-                    builder: (context) => IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: Icon(
-                        Icons.menu,
-                        size: size.width * 0.07,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-
-                  Expanded(
-                    child: Text(
-                      "Ride Started",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: size.width * 0.05,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-
-                  IconButton(
-                    onPressed: () {
-                      // NOTIFICATION SCREEN
-                    },
-                    icon: Icon(
-                      Icons.notifications_none,
-                      size: size.width * 0.065,
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: size.height * 0.02),
-
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
+                  child: Row(
                     children: [
 
-                      /// MAP
-                      Container(
-                        width: double.infinity,
-                        height: size.height * 0.23,
+                      const SizedBox(width: 10),
 
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(22),
-                          image: const DecorationImage(
-                            image: AssetImage(
-                              "assets/map.png",
-                            ),
-                            fit: BoxFit.cover,
+                      IconButton(
+                        onPressed: () {
+
+                        },
+                        icon: Icon(
+                          Icons.menu,
+                          size: size.width * 0.07,
+                          color: Colors.black,
+                        ),
+                      ),
+
+                      const Expanded(
+                        child: Text(
+                          "Active Ride",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'Geologica',
+                            fontSize: 28,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            letterSpacing: 0,
                           ),
                         ),
                       ),
 
-                      SizedBox(height: size.height * 0.02),
-
-                      /// CUSTOMER CARD
-                      Container(
-                        padding: EdgeInsets.all(
-                          size.width * 0.03,
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.notifications_none,
+                          size: 28,
+                          color: Colors.black,
                         ),
+                      ),
 
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.circular(20),
-                        ),
+                      const SizedBox(width: 10),
+                    ],
+                  ),
+                ),
 
-                        child: Row(
-                          children: [
+                SizedBox(height: size.height * 0.0),
 
-                            CircleAvatar(
-                              radius: size.width * 0.05,
-                              backgroundColor:
-                              Colors.blue.shade100,
-                              child: Icon(
-                                Icons.person,
-                                color: Colors.blue,
-                                size: size.width * 0.06,
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics:
+                    const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+
+                        /// MAP CARD
+                        GestureDetector(
+                          onTap: () {
+
+                          },
+                          child: Container(
+                            height: size.height * 0.45,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                              BorderRadius.circular(0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius:
+                              BorderRadius.circular(0),
+                              child: Image.network(
+                                "https://maps.gstatic.com/tactile/basepage/pegman_sherlock.png",
+                                fit: BoxFit.cover,
                               ),
                             ),
+                          ),
+                        ),
 
-                            SizedBox(
-                              width: size.width * 0.03,
+                        SizedBox(
+                            height: size.height * 0.0),
+
+                        /// CUSTOMER CARD
+                        Center(
+                          child: Container(
+                            width: 365,
+                            height: 230,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFD9D9D9),
+                              borderRadius: BorderRadius.circular(24),
                             ),
 
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
 
+                              child: Column(
                                 children: [
 
-                                  Text(
-                                    "Rahul",
+                                  const Text(
+                                    "PICK UP DETAILS",
                                     style: TextStyle(
-                                      fontSize:
-                                      size.width * 0.035,
-                                      fontWeight:
-                                      FontWeight.bold,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black,
                                     ),
                                   ),
 
-                                  Text(
-                                    "Customer",
-                                    style: TextStyle(
-                                      fontSize:
-                                      size.width * 0.025,
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 3),
+                                  const SizedBox(height: 25),
 
                                   Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
 
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                        size:
-                                        size.width * 0.04,
+                                      CircleAvatar(
+                                        radius: 28,
+                                        backgroundImage:
+                                        AssetImage("assets/images/user.png"),
                                       ),
 
-                                      SizedBox(width: 3),
+                                      const SizedBox(width: 12),
 
-                                      Text(
-                                        "4.5",
-                                        style: TextStyle(
-                                          fontSize:
-                                          size.width *
-                                              0.032,
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: const [
+
+                                            Text(
+                                              "Neha",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+
+                                            SizedBox(height: 8),
+
+                                            Row(
+                                              children: [
+
+                                                Icon(
+                                                  Icons.location_on,
+                                                  size: 20,
+                                                ),
+
+                                                SizedBox(width: 4),
+
+                                                Text(
+                                                  "Shivaji Nagar",
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                            SizedBox(height: 6),
+
+                                            Padding(
+                                              padding:
+                                              EdgeInsets.only(left: 24),
+                                              child: Text(
+                                                "0.5 km",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
 
+                                      Column(
+                                        children: [
+
+                                          SizedBox(
+                                            width: 122,
+                                            height: 33,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                // message api
+                                              },
+
+                                              style:
+                                              ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                Colors.white,
+                                                elevation: 0,
+                                                shape:
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      9),
+                                                ),
+                                              ),
+
+                                              child: const Text(
+                                                "Message",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 8),
+
+                                          SizedBox(
+                                            width: 122,
+                                            height: 33,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                // call api
+                                              },
+
+                                              style:
+                                              ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                Colors.white,
+                                                elevation: 0,
+                                                shape:
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      9),
+                                                ),
+                                              ),
+
+                                              child: const Text(
+                                                "Call",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 35),
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+
                                       SizedBox(
-                                        width:
-                                        size.width * 0.05,
+                                        width: 43,
+                                        height: 50,
+                                        child: TextField(
+                                          textAlign: TextAlign.center,
+                                          keyboardType: TextInputType.number,
+                                          maxLength: 1,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          decoration: const InputDecoration(
+                                            counterText: "",
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                          ),
+                                          onChanged: (value) {
+                                            if (value.length == 1) {
+                                              FocusScope.of(context).nextFocus();
+                                            }
+                                          },
+                                        ),
                                       ),
 
-                                      Text(
-                                        "8.2 km",
-                                        style: TextStyle(
-                                          fontWeight:
-                                          FontWeight.bold,
-                                          fontSize:
-                                          size.width *
-                                              0.04,
+                                      const SizedBox(width: 8),
+                                      SizedBox(
+                                        width: 43,
+                                        height: 50,
+                                        child: TextField(
+                                          textAlign: TextAlign.center,
+                                          keyboardType: TextInputType.number,
+                                          maxLength: 1,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          decoration: const InputDecoration(
+                                            counterText: "",
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                          ),
+                                          onChanged: (value) {
+                                            if (value.length == 1) {
+                                              FocusScope.of(context).nextFocus();
+                                            } else if (value.isEmpty) {
+                                              FocusScope.of(context).previousFocus();
+                                            }
+                                          },
+                                        ),
+                                      ),
+
+                                      const SizedBox(width: 8),
+
+                                      SizedBox(
+                                        width: 43,
+                                        height: 50,
+                                        child: TextField(
+                                          textAlign: TextAlign.center,
+                                          keyboardType: TextInputType.number,
+                                          maxLength: 1,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          decoration: const InputDecoration(
+                                            counterText: "",
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                          ),
+                                          onChanged: (value) {
+                                            if (value.length == 1) {
+                                              FocusScope.of(context).nextFocus();
+                                            } else if (value.isEmpty) {
+                                              FocusScope.of(context).previousFocus();
+                                            }
+                                          },
+                                        ),
+                                      ),
+
+                                      const SizedBox(width: 8),
+
+                                      SizedBox(
+                                        width: 43,
+                                        height: 50,
+                                        child: TextField(
+                                          textAlign: TextAlign.center,
+                                          keyboardType: TextInputType.number,
+                                          maxLength: 1,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          decoration: const InputDecoration(
+                                            counterText: "",
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                          ),
+                                          onChanged: (value) {
+                                            if (value.isEmpty) {
+                                              FocusScope.of(context).previousFocus();
+                                            }
+                                          },
+                                        ),
+                                      ),
+
+                                      const SizedBox(width: 17),
+
+                                      SizedBox(
+                                        width: 120,
+                                        height: 35,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => DropRideScreen(),
+                                              ),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: const Color(0xFF43E000),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            "Submit",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -196,352 +444,83 @@ class _RideStartedScreenState extends State<RideStartedScreen> {
                                 ],
                               ),
                             ),
+                          ),
+                        ),
+                        /// bttom contaier BUTTON
+                        Container(
+                          width: double.infinity,
+                          height: 99,
+                          color: const Color(0xFF3C3A3A),
 
-                            IconButton(
-                              onPressed: () {
-                                // CHAT SCREEN
-                              },
-                              icon: const Icon(
-                                Icons.chat_bubble_outline,
+                          child: Center(
+                            child: Container(
+                              width: 359,
+                              height: 59,
+
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
 
-                      SizedBox(height: size.height * 0.015),
-
-                      /// PICKUP DROP CARD
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.04,
-                          vertical: size.height * 0.022,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.circular(16),
-                        ),
-
-                        child: Column(
-                          children: [
-
-                            Row(
-                              children: [
-
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-
-                                    children: [
-
-                                      Text(
-                                        "Pick up",
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize:
-                                          size.width *
-                                              0.029,
-                                        ),
-                                      ),
-
-                                      SizedBox(height: 5),
-
-                                      Row(
-                                        children: [
-
-                                          const Icon(
-                                            Icons.location_on,
-                                            color:
-                                            Colors.green,
-                                            size: 20,
-                                          ),
-
-                                          SizedBox(width: 3),
-
-                                          Flexible(
-                                            child: Text(
-                                              "Shivaji Nagar",
-                                              overflow: TextOverflow.ellipsis,
-                                              style:
-                                              TextStyle(
-                                                fontSize:
-                                                size.width *
-                                                    0.032,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-
-                                    children: [
-
-                                      Text(
-                                        "Drop",
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize:
-                                          size.width *
-                                              0.029,
-                                        ),
-                                      ),
-
-                                      SizedBox(height: 5),
-
-                                      Row(
-                                        children: [
-
-                                          const Icon(
-                                            Icons.location_on,
-                                            color: Colors.red,
-                                            size: 20,
-                                          ),
-
-                                          SizedBox(width: 3),
-
-                                          Flexible(
-                                            child: Text(
-                                              "Hinjewadi Phase 1",
-                                              overflow: TextOverflow.ellipsis,
-                                              style:
-                                              TextStyle(
-                                                fontSize:
-                                                size.width *
-                                                    0.032,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            SizedBox(height: 23),
-
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceAround,
-
-                              children: [
-
-                                Text(
-                                  "Distance Left  4.2km",
-                                  style: TextStyle(
-                                    fontSize:
-                                    size.width * 0.032,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-
-                                Text(
-                                  "Time Left  10 min",
-                                  style: TextStyle(
-                                    fontSize:
-                                    size.width * 0.032,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: size.height * 0.02),
-
-                      /// OTP CARD
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(
-                          size.width * 0.04,
-                        ),
-
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF3F3518),
-                          borderRadius:
-                          BorderRadius.circular(14),
-                        ),
-
-                        child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-
-                          children: [
-
-                            Text(
-                              "Customer OTP",
-                              style: TextStyle(
+                              decoration: BoxDecoration(
                                 color: Colors.white,
-                                fontSize:
-                                size.width * 0.032,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+
+                              child: Row(
+                                children: [
+
+                                  const Icon(
+                                    Icons.error_outline,
+                                    size: 26,
+                                    color: Colors.black,
+                                  ),
+
+                                  const SizedBox(width: 8),
+
+                                  Expanded(
+                                    child: Text(
+                                      "Canceling rides more than 2 times in a single day may temporarily block your account for 24 hours. Please accept rides responsibly to maintain smooth service for customers.",
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+
+                                  GestureDetector(
+                                    onTap: () {
+                                      // CANCEL RIDE API HERE
+                                    },
+                                    child: const Text(
+                                      "Cancel Ride",
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-
-                            SizedBox(height: 12),
-
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceEvenly,
-
-                              children: [
-
-                                otpBox(otp1, context),
-                                otpBox(otp2, context),
-                                otpBox(otp3, context),
-                                otpBox(otp4, context),
-                                otpBox(otp5, context),
-                                otpBox(otp6, context),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: size.height * 0.02),
-
-                      /// CANCEL BUTTON
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // CANCEL RIDE API
-                        },
-
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.red,
-                          shape:
-                          RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(8),
                           ),
                         ),
 
-                        icon: const Icon(Icons.close),
-                        label: const Text("Cancel Ride"),
-                      ),
-
-                      SizedBox(height: size.height * 0.02),
-
-                      /// WARNING CARD
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(
-                          size.width * 0.03,
+                        SizedBox(
+                          height: size.height * 0.005,
                         ),
-
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                          BorderRadius.circular(14),
-                        ),
-
-                        child: Row(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-
-                          children: [
-
-                            const Icon(
-                              Icons.info_outline,
-                            ),
-
-                            SizedBox(
-                              width: size.width * 0.02,
-                            ),
-
-                            Expanded(
-                              child: Text(
-                                "Cancelling rides more than 2 times in a single day may temporarily block your account for 24 hours. Please accept rides responsibly.",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize:
-                                  size.width * 0.022,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: size.height * 0.02),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
 
-  Widget otpBox(
-      TextEditingController controller,
-      BuildContext context,
-      ) {
-    final size = MediaQuery.of(context).size;
-
-    return SizedBox(
-      width: size.width * 0.11,
-      height: size.width * 0.14,
-
-      child: TextField(
-        controller: controller,
-        textAlign: TextAlign.center,
-        maxLength: 1,
-        keyboardType: TextInputType.number,
-
-        style: TextStyle(
-          fontSize: size.width * 0.05,
-          fontWeight: FontWeight.bold,
-        ),
-
-        decoration: InputDecoration(
-          counterText: "",
-          filled: true,
-          fillColor: Colors.white,
-
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
-          ),
-        ),
-
-        onChanged: (value) {
-
-          if (value.length == 1) {
-            FocusScope.of(context).nextFocus();
-          }
-
-          if (otp1.text.isNotEmpty &&
-              otp2.text.isNotEmpty &&
-              otp3.text.isNotEmpty &&
-              otp4.text.isNotEmpty &&
-              otp5.text.isNotEmpty &&
-              otp6.text.isNotEmpty) {
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => RateRideScreen(),
-              ),
-            );
-          }
-        },
+        ],
       ),
     );
   }

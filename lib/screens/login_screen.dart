@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'forgotpassword_screen.dart';
 import '../screens/rides/map_screen.dart';
+import '../utils/app_text.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // 🔥 LOGIN API FUNCTION
   Future<void> loginDriver() async {
 
-    final url = Uri.parse("http://192.168.0.34:5000/api/driver/login");
+    final url = Uri.parse("http://10.95.155.50:5000/api/driver/login");
 
     try {
 
@@ -47,16 +48,18 @@ class _LoginScreenState extends State<LoginScreen> {
         if (responseData['token'] != null) {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('jwt_token', responseData['token']);
+          await prefs.setBool('isLoggedIn', true);
           print("TOKEN SAVED: ${responseData['token']}");
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login Successful")),
-        );
+        if (!mounted) return;
 
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => MapScreen()),
+          MaterialPageRoute(
+            builder: (context) => const MapScreen(),
+          ),
+              (route) => false,
         );
 
       } else {
@@ -81,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xFFE3C65A),
+      backgroundColor: const Color(0xFFEAEAEA),
 
       body: SingleChildScrollView(
         child: Padding(
@@ -90,16 +93,21 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: [
 
+              SizedBox(height: height * 0.12),
+
+              Container(
+                width: width * 0.55,
+                height: width * 0.55,
+                child: Image.asset(
+                  'assets/logo.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+
               SizedBox(height: height * 0.08),
 
-              // LOGO
-              Image.asset('assets/logo.png', width: width * 0.5),
-
-              SizedBox(height: height * 0.05),
-
               // TITLE
-              Text(
-                "Driver Login",
+          Text(AppText.getText("Driver Login"),
                 style: TextStyle(
                   fontSize: width * 0.06,
                   fontWeight: FontWeight.bold,
@@ -112,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: usernameController,
                 decoration: InputDecoration(
-                  hintText: "Enter Phone Number",
+                  hintText: AppText.getText("Enter Phone Number"),
                   filled: true,
                   fillColor: Colors.white,
                   prefixIcon: Icon(Icons.person),
@@ -129,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  hintText: "Enter Password",
+                  hintText : AppText.getText("Enter Password"),
                   filled: true,
                   fillColor: Colors.white,
                   prefixIcon: Icon(Icons.lock),
@@ -156,8 +164,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   loginDriver();
 
                 },
-                child: Text(
-                  "Login",
+                child: Text(AppText.getText
+                  ("Login"),
                   style: TextStyle(fontSize: width * 0.045),
                 ),
               ),
@@ -176,8 +184,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
 
                 },
-                child: Text(
-                  "Forgot Password..?",
+                child: Text(AppText.getText
+                  ("Forgot Password"),
                   style: TextStyle(
                     fontSize: width * 0.04,
                     fontWeight: FontWeight.w500,

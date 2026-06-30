@@ -13,7 +13,7 @@ class LanguageSettingScreen extends StatefulWidget {
 class _LanguageSettingScreenState
     extends State<LanguageSettingScreen> {
 
-  String selectedLanguage = "ENGLISH";
+  String selectedLanguage = AppText.selectedLanguage;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class _LanguageSettingScreenState
                     IconButton(
                       onPressed: () {
 
-                        Navigator.push(
+                        Navigator.pop(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>  SettingsScreen(),
@@ -167,16 +167,14 @@ class _LanguageSettingScreenState
 
                   child: ElevatedButton(
                     onPressed: () {
+                      AppText.selectedLanguage = selectedLanguage;
 
-                      /// SAVE LANGUAGE
-                      AppText.selectedLanguage =
-                          selectedLanguage;
+                      print("SAVED LANGUAGE = ${AppText.selectedLanguage}");
 
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              SettingsScreen(),
+                          builder: (context) => SettingsScreen(),
                         ),
                       );
                     },

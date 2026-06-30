@@ -43,3 +43,16 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+#for git purpose i have added below lines
+backend/backend/node_modules/
+backend/backend/.env
+backend/backend/uploads/
+
+build/
+.dart_tool/
+
+backend/backend/node_modules/
+backend/backend/.env
+backend/backend/uploads/
